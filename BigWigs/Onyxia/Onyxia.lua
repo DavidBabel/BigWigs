@@ -111,14 +111,14 @@ BigWigsOnyxia = BigWigs:NewModule(boss)
 BigWigsOnyxia.zonename = AceLibrary("Babble-Zone-2.2")["Onyxia's Lair"]
 BigWigsOnyxia.enabletrigger = boss
 BigWigsOnyxia.toggleoptions = { "flamebreath", "deepbreath", "wingbuffet", "fireball", "phase", "onyfear", "bosskill"}
-BigWigsOnyxia.revision = tonumber(string.sub("$Revision: 11203 $", 12, -3))
+BigWigsOnyxia.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
 ------------------------------
 
 function BigWigsOnyxia:OnEnable()
-	transitioned = nil
+	transitioned = false
 	started = false
 	self:RegisterEvent("CHAT_MSG_MONSTER_EMOTE")
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
@@ -159,8 +159,8 @@ function BigWigsOnyxia:UNIT_HEALTH(arg1) --temporary workaround until Phase2 yel
 		local health = UnitHealth(arg1)
 		if health > 650000 and health <= 689635 and not transitioned then
 			self:TriggerEvent("BigWigs_SendSync", "OnyPhaseTwo")
-		elseif health > 689635 and transitioned then
-			transitioned = nil
+		elseif health > 689635 then
+			transitioned = false
 		end
 	end
 end
@@ -179,12 +179,12 @@ end
 
 function BigWigsOnyxia:BigWigs_RecvSync(sync, rest, nick)
 	if sync == "BossEngaged" and rest == "Onyxia" then
-		started = true
-		if self.db.profile.phase and started then
+		if self.db.profile.phase and not started then
 			self:TriggerEvent("BigWigs_Message", L["phase1text"], "Attention")
 		end
+		started = true
 	elseif sync == "OnyPhaseTwo" then
-		transitioned = true
+		transitioned = true --to stop sending new syncs
 		if self.db.profile.phase then
 			self:TriggerEvent("BigWigs_Message", L["phase2text"], "Attention")
 		end
