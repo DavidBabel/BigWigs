@@ -16,7 +16,7 @@ local L = AceLibrary("AceLocale-2.2"):new("BigWigs"..boss)
 L:RegisterTranslations("enUS", function() return {
 	cmd = "BugFamily",
 	
-	healtrigger = "Princess Yauj begins to cast Great Heal.",
+	healtrigger = "Princess Yauj begins to cast Great Heal\.",
 	healbar = "Great Heal",
 	healwarn = "Casting heal!",
 	attack_trigger1 = "Princess Yauj attacks",
@@ -25,7 +25,8 @@ L:RegisterTranslations("enUS", function() return {
 	attack_trigger4 = "Princess Yauj crits",
 	panic_bar = "Panic",
 	panic_message = "Fear in 3 Seconds!",
-	toxicvolleyhit_trigger = "afflicted by Toxic Volley",
+	toxicvolleyhit_trigger = "Toxic Volley hits",
+	toxicvolleyafflicted_trigger = "afflicted by Toxic Volley\.",
 	toxicvolleyresist_trigger = "Toxic Volley was resisted",
 	toxicvolleyimmune_trigger = "Toxic Volley fail(.+) immune",
 	toxicvolley_bar = "Toxic Volley",
@@ -33,8 +34,8 @@ L:RegisterTranslations("enUS", function() return {
 	panic_trigger = "afflicted by Panic\.",
 	panicresist_trigger = "Princess Yauj 's Panic was resisted",
 	panicimmune_trigger = "Princess Yauj 's Panic fail(.+) immune",
-	toxicvaporsyou_trigger = "You are afflicted by Toxic Vapors.",
-	toxicvaporsother_trigger = "(.+) is afflicted by Toxic Vapors.",
+	toxicvaporsyou_trigger = "You are afflicted by Toxic Vapors\.",
+	toxicvaporsother_trigger = "(.+) is afflicted by Toxic Vapors\.",
 	toxicvapors_message = "Move away from the Poison Cloud!",
 	enrage_bar = "Enrage",
 	warn5minutes = "Enrage in 5 minutes!",
@@ -46,9 +47,11 @@ L:RegisterTranslations("enUS", function() return {
 	kridead_message = "Lord Kri is dead! Poison Cloud spawned!",
 	yaujdead_message = "Princess Yauj is dead! Kill the spawns!",
 	vemdead_message = "Vem is dead!",
-	vemdeadcontkri_message = "Vem is dead! Lord Kri is Enraged!",
-	vemdeadcontyauj_message = "Vem is dead! Princess Yauj is Enraged!",
-	vemdeadcontboth_message = "Vem is dead! Lord Kri & Princess Yauj are Enraged!",
+	vemdeadcontkri_message = "Vem is dead! Lord Kri is enraged!",
+	vemdeadcontyauj_message = "Vem is dead! Princess Yauj is enraged!",
+	vemdeadcontboth_message = "Vem is dead! Lord Kri & Princess Yauj are enraged!",
+	enrage_trigger = "%s goes into a berserker rage!",
+	enrage_warning = "Enraged!",
 	
 	panic_cmd = "panic",
 	panic_name = "Fear",
@@ -64,7 +67,7 @@ L:RegisterTranslations("enUS", function() return {
 
 	announce_cmd = "announce",
 	announce_name = "Poison Cloud",
-	announce_desc = "Whispers players that stand in the Poison Cloud.",
+	announce_desc = "Whispers players that stand in the Poison Cloud.\n\n(Requires assistant or higher)",
 	
 	deathspecials_cmd = "deathspecials",
 	deathspecials_name = "Death Specials",
@@ -75,6 +78,71 @@ L:RegisterTranslations("enUS", function() return {
 	enrage_desc = "Enrage timers.",
 } end )
 
+L:RegisterTranslations("deDE", function() return {
+	cmd = "BugFamily",
+	
+	healtrigger = "Princess Yauj beginnt Gro\195\159e Heilung zu wirken\.",
+	healbar = "Gro\195\159e Heilung",
+	healwarn = "Wirkt Heilung!",
+	attack_trigger1 = "Princess Yauj greift an",
+	attack_trigger2 = "Princess Yauj verfehlt",
+	attack_trigger3 = "Princess Yauj trifft",
+	attack_trigger4 = "Princess Yauj trifft (.+) kritisch",
+	panic_bar = "Panik",
+	panic_message = "Furcht in 3 Sekunden!",
+	toxicvolleyhit_trigger = "Toxische Salve trifft",
+	toxicvolleyafflicted_trigger = "von Toxische Salve betroffen",
+	toxicvolleyresist_trigger = "Toxische Salve(.+) widerstanden",
+	toxicvolleyimmune_trigger = "Toxische Salve fail(.+) immun",
+	toxicvolley_bar = "Toxische Salve",
+	toxicvolley_message = "Toxische Salve in 3 Sekunden!",
+	panic_trigger = "von Panik betroffen",
+	panicresist_trigger = "Panik(.+) widerstanden",
+	panicimmune_trigger = "Panik(.+) immun",
+	toxicvaporsyou_trigger = "Ihr seid von Toxische D\195\164mpfe betroffen\.",
+	toxicvaporsother_trigger = "(.+) ist von Toxische D\195\164mpfe betroffen\.",
+	toxicvapors_message = "Beweg dich aus der Giftwolke raus!",
+	enrage_bar = "Raserei",
+	warn5minutes = "Raserei in 5 Minuten!",
+	warn3minutes = "Raserei in 3 Minuten!",
+	warn90seconds = "Raserei in 90 Sekunden!",
+	warn60seconds = "Raserei in 60 Sekunden!",
+	warn30seconds = "Raserei in 30 Sekunden!",
+	warn10seconds = "Raserei in 10 Sekunden!",
+	kridead_message = "Lord Kri ist tot! Giftwolke hat sich gebildet!",
+	yaujdead_message = "Princess Yauj ist tot! T\195\182te die kleinen K\195\164fer!",
+	vemdead_message = "Vem ist tot!",
+	vemdeadcontkri_message = "Vem ist tot! Lord Kri verf\195\164llt in Raserei!",
+	vemdeadcontyauj_message = "Vem ist tot! Princess Yauj verf\195\164llt in Raserei!",
+	vemdeadcontboth_message = "Vem ist tot! Lord Kri & Princess Yauj verfallen in Raserei!",
+	enrage_trigger = "%s goes into a berserker rage!",
+	enrage_warning = "Raserei!",
+	
+	panic_cmd = "panic",
+	panic_name = "Furcht",
+	panic_desc = "Warnung f\195\188r Princess Yaujs Panik.",
+
+	toxicvolley_cmd = "toxicvolley",
+	toxicvolley_name = "Toxische Salve",
+	toxicvolley_desc = "Warnung f\195\188r Lord Kris Toxische Salve.",
+
+	heal_cmd = "heal",
+	heal_name = "Gro\195\159e Heilung",
+	heal_desc = "Verk\195\188ndet Princess Yaujs Heilungen.",
+
+	announce_cmd = "announce",
+	announce_name = "Giftwolke",
+	announce_desc = "Fl\195\188stert Spielern, dass sie in der Giftwolke stehen.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
+	
+	deathspecials_cmd = "deathspecials",
+	deathspecials_name = "Spezielle Todeseffekte",
+	deathspecials_desc = "Informiert Spieler, welcher Boss bereits get\195\182tet wurde und welche Spezialf\195\164higkeiten sie haben.",
+	
+	enrage_cmd = "enrage",
+	enrage_name = "Raserei",
+	enrage_desc = "Zeit, bis der Boss in Raserei verf\195\164llt.",
+} end )
+
 ----------------------------------
 --      Module Declaration      --
 ----------------------------------
@@ -83,7 +151,7 @@ BigWigsBugFamily = BigWigs:NewModule(boss)
 BigWigsBugFamily.zonename = AceLibrary("Babble-Zone-2.2")["Ahn'Qiraj"]
 BigWigsBugFamily.enabletrigger = {kri, yauj, vem}
 BigWigsBugFamily.toggleoptions = {"panic", "toxicvolley", "heal", "announce", "deathspecials", "enrage", "bosskill"}
-BigWigsBugFamily.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
+BigWigsBugFamily.revision = tonumber(string.sub("$Revision: 11208 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -96,6 +164,7 @@ function BigWigsBugFamily:OnEnable()
 	healtime = 0
 	castingheal = false
 	started = false
+	self:RegisterEvent("CHAT_MSG_MONSTER_EMOTE")
 	self:RegisterEvent("CHAT_MSG_COMBAT_HOSTILE_DEATH")
 	self:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_HITS", "Melee")
 	self:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES", "Melee")
@@ -117,6 +186,7 @@ function BigWigsBugFamily:OnEnable()
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioYaujHealStart", 5)
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioYaujHealStop", 5)
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioYaujPanic", 5)
+	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioEnraged", 5)
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioKriDead", 5)
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioYaujDead", 5)
 	self:TriggerEvent("BigWigs_ThrottleSync", "BugTrioVemDead", 5)
@@ -131,7 +201,7 @@ function BigWigsBugFamily:Spells(msg)
 	local _,_,toxicvaporsother,_ = string.find(msg, L["toxicvaporsother_trigger"])
 	if string.find(msg, L["panic_trigger"]) or string.find(msg, L["panicresist_trigger"]) or string.find(msg, L["panicimmune_trigger"]) then
 		self:TriggerEvent("BigWigs_SendSync", "BugTrioYaujPanic")
-	elseif string.find(msg, L["toxicvolleyhit_trigger"]) or string.find(msg, L["toxicvolleyresist_trigger"]) or string.find(msg, L["toxicvolleyimmune_trigger"]) then
+	elseif string.find(msg, L["toxicvolleyhit_trigger"]) or string.find(msg, L["toxicvolleyafflicted_trigger"]) or string.find(msg, L["toxicvolleyresist_trigger"]) or string.find(msg, L["toxicvolleyimmune_trigger"]) then
 		self:TriggerEvent("BigWigs_SendSync", "BugTrioKriVolley")
 	elseif msg == L["toxicvaporsyou_trigger"] and self.db.profile.announce then		
 		self:TriggerEvent("BigWigs_Message", L["toxicvapors_message"], "Attention", "Alarm")
@@ -168,6 +238,12 @@ function BigWigsBugFamily:CHAT_MSG_SPELL_CREATURE_VS_CREATURE_BUFF(msg)
 	end
 end
 
+function BigWigsBugFamily:CHAT_MSG_MONSTER_EMOTE(msg)
+	if msg == L["enrage_trigger"] then
+		self:TriggerEvent("BigWigs_SendSync", "BugTrioEnraged")
+	end
+end
+
 function BigWigsBugFamily:BigWigs_RecvSync(sync, rest, nick)
 	if sync == "BossEngaged" and rest == "The Bug Family" then
 		if not started then
@@ -175,8 +251,12 @@ function BigWigsBugFamily:BigWigs_RecvSync(sync, rest, nick)
 				self:TriggerEvent("BigWigs_StartBar", self, L["panic_bar"], 18.4, "Interface\\Icons\\Spell_Shadow_DeathScream", true, "white")
 				self:ScheduleEvent("PanicAnnounce", "BigWigs_Message", 15.4, L["panic_message"], "Urgent", true, "Alarm")
 			end
+			if self.db.profile.toxicvolley then
+				self:TriggerEvent("BigWigs_StartBar", self, L["toxicvolley_bar"], 11.4, "Interface\\Icons\\Spell_Nature_Corrosivebreath", true, "green")
+				self:ScheduleEvent("ToxicVolleyAnnounce", "BigWigs_Message", 8.4, L["toxicvolley_message"], "Urgent")
+			end
 			if self.db.profile.enrage then
-				self:TriggerEvent("BigWigs_StartBar", self, L["enrage_bar"], 900, "Interface\\Icons\\Spell_Shadow_UnholyFrenzy")
+				self:TriggerEvent("BigWigs_StartBar", self, L["enrage_bar"], 900, "Interface\\Icons\\Spell_Shadow_UnholyFrenzy", true, "red")
 				self:ScheduleEvent("BigWigs_Message", 600, L["warn5minutes"], "Attention")
 				self:ScheduleEvent("BigWigs_Message", 720, L["warn3minutes"], "Attention")
 				self:ScheduleEvent("BigWigs_Message", 810, L["warn90seconds"], "Attention")
@@ -204,6 +284,10 @@ function BigWigsBugFamily:BigWigs_RecvSync(sync, rest, nick)
 	elseif sync == "BugTrioYaujPanic" and self.db.profile.panic then
 		self:TriggerEvent("BigWigs_StartBar", self, L["panic_bar"], 20, "Interface\\Icons\\Spell_Shadow_DeathScream", true, "white")
 		self:ScheduleEvent("BigWigs_Message", 17, L["panic_message"], "Urgent", true, "Alarm")
+	elseif sync == "BugTrioEnraged" then
+		if self.db.profile.enrage then
+			self:TriggerEvent("BigWigs_Message", L["enrage_warning"], "Important")
+		end
 	elseif sync == "BugTrioKriDead" then
 		kridead = true
 		if self.db.profile.toxicvolley then
