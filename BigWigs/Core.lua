@@ -50,6 +50,7 @@ L:RegisterTranslations("enUS", function() return {
 	["Debugging"] = true,
 	["Show debug messages."] = true,
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
+	["%s has requested forced reboot for the %s module."] = true,
 	bosskill_cmd = "kill",
 	bosskill_name = "Boss death",
 	bosskill_desc = "Announce when boss is defeated",
@@ -107,6 +108,7 @@ L:RegisterTranslations("frFR", function() return {
 	["Debugging"] = "D\195\169boguage",
 	["Show debug messages."] = "Afficher les messages de d\195\169boguage.",
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = "Force le module pour r\195\169initialiser pour tout le monde dans le raid.\n\n(N\195\169cessite assistant ou sup\195\169rieur).",
+	["%s has requested forced reboot for the %s module."] = true,
 	bosskill_name = "Mort des Boss",
 	bosskill_desc = "Annoncer la mort des boss.",
 
@@ -158,6 +160,7 @@ L:RegisterTranslations("deDE", function() return {
 	["Debugging"] = "Debugging",
 	["Show debug messages."] = "Zeige Debug Nachrichten.",
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = "Erzwingt das Modul f\195\188r jeden im Raid zur\195\188ckgesetzt.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
+	["%s has requested forced reboot for the %s module."] = "%s hat beantragt Zwangs Neustart f\195\188r die %s-Modul.",
 	-- bosskill_cmd = "kill",
 	bosskill_name = "Boss besiegt",
 	bosskill_desc = "Melde, wenn ein Boss besiegt wurde.",
@@ -199,6 +202,7 @@ L:RegisterTranslations("koKR", function() return {
 	["Debugging"] = "디버깅",
 	["Show debug messages."] = "디버그 메세지 표시",
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
+	["%s has requested forced reboot for the %s module."] = true,
 	bosskill_name = "보스 사망",
 	bosskill_desc = "보스를 물리쳤을 때 알림",
 
@@ -250,6 +254,7 @@ L:RegisterTranslations("zhCN", function() return {
 	["Debugging"] = "除错",
 	["Show debug messages."] = "显示除错信息。",
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
+	["%s has requested forced reboot for the %s module."] = true,
 	bosskill_name = "首领死亡",
 	bosskill_desc = "首领死亡时提示",
 
@@ -300,6 +305,7 @@ L:RegisterTranslations("zhTW", function() return {
 	["Debugging"] = "除錯",
 	["Show debug messages."] = "顯示除錯訊息。",
 	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
+	["%s has requested forced reboot for the %s module."] = true,
 
 	bosskill_name = "首領死亡",
 	bosskill_desc = "首領被擊敗時發出提示。",
@@ -728,7 +734,7 @@ function BigWigs:BigWigs_RebootModule(module)
 end
 
 
-function BigWigs:BigWigs_RecvSync(sync, module)
+function BigWigs:BigWigs_RecvSync(sync, module, nick)
 	if sync == "EnableModule" and module then
 		local name = BB:HasTranslation(module) and BB[module] or module
 		if self:HasModule(name) and self:GetModule(name).zonename == GetRealZoneText() then self:EnableModule(name, true) end
@@ -736,6 +742,9 @@ function BigWigs:BigWigs_RecvSync(sync, module)
 		local name = BB:HasTranslation(module) and BB[module] or module
 		if self:HasModule(name) and self:GetModule(name).zonename == GetRealZoneText() then self:EnableModule(name, true) end
 	elseif sync == "RebootModule" and module then
+		if nick ~= UnitName("player") then
+			self:Print(string.format(L["%s has requested forced reboot for the %s module."], nick, module))
+		end
 		self:TriggerEvent("BigWigs_RebootModule", module)
 	end
 end
