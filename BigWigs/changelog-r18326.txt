@@ -1,4 +1,8 @@
 ------------------------------------------------------------------------
+r18326 | snelf | 2015-02-26 13:34:28 +0200 (Wed, 26 Jun 2013)
+
+BigWigs: Added force reboot.
+------------------------------------------------------------------------
 r18324 | snelf | 2014-05-11 11:44:28 +0200 (Wed, 26 Jun 2013) | 50 lines
 
 BigWigs: Edited the check for pets to check in party/self pet too. Added check by name in raid/group/self.

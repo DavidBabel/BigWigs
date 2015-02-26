@@ -42,11 +42,14 @@ L:RegisterTranslations("enUS", function() return {
 	["Active"] = true,
 	["Activate or deactivate this module."] = true,
 	["reboot"] = true,
+	["rebootall"] = true,
 	["Reboot"] = true,
+	["Reboot All"] = true,
 	["Reboot this module."] = true,
 	["debug"] = true,
 	["Debugging"] = true,
 	["Show debug messages."] = true,
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
 	bosskill_cmd = "kill",
 	bosskill_name = "Boss death",
 	bosskill_desc = "Announce when boss is defeated",
@@ -98,10 +101,12 @@ L:RegisterTranslations("frFR", function() return {
 	["Activate or deactivate this module."] = "Activer ou d\195\169sactiver ce module.",
 	-- ["reboot"] = true,
 	["Reboot"] = "Red\195\169marrer",
+	["Reboot All"] = "Red\195\169marrer tout",
 	["Reboot this module."] = "Red\195\169marrer ce module.",
 	-- ["debug"] = true,
 	["Debugging"] = "D\195\169boguage",
 	["Show debug messages."] = "Afficher les messages de d\195\169boguage.",
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = "Force le module pour r\195\169initialiser pour tout le monde dans le raid.\n\n(N\195\169cessite assistant ou sup\195\169rieur).",
 	bosskill_name = "Mort des Boss",
 	bosskill_desc = "Annoncer la mort des boss.",
 
@@ -147,10 +152,12 @@ L:RegisterTranslations("deDE", function() return {
 	["Activate or deactivate this module."] = "Aktiviert oder deaktiviert dieses Modul.",
 	-- ["reboot"] = true,
 	["Reboot"] = "Neustarten",
+	["Reboot All"] = "Alles Neustarten",
 	["Reboot this module."] = "Startet dieses Modul neu.",
 	-- ["debug"] = true,
 	["Debugging"] = "Debugging",
 	["Show debug messages."] = "Zeige Debug Nachrichten.",
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = "Erzwingt das Modul f\195\188r jeden im Raid zur\195\188ckgesetzt.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
 	-- bosskill_cmd = "kill",
 	bosskill_name = "Boss besiegt",
 	bosskill_desc = "Melde, wenn ein Boss besiegt wurde.",
@@ -187,9 +194,11 @@ L:RegisterTranslations("koKR", function() return {
 	["Active"] = "활성화",
 	["Activate or deactivate this module."] = "활성화 혹은 모둘 발견",
 	["Reboot"] = "재시작",
+	["Reboot All"] = true,
 	["Reboot this module."] = "모듈 재시작",
 	["Debugging"] = "디버깅",
 	["Show debug messages."] = "디버그 메세지 표시",
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
 	bosskill_name = "보스 사망",
 	bosskill_desc = "보스를 물리쳤을 때 알림",
 
@@ -235,10 +244,12 @@ L:RegisterTranslations("zhCN", function() return {
 	["Activate or deactivate this module."] = "激活或关闭此模块。",
 	["reboot"] = "重启",
 	["Reboot"] = "重启",
+	["Reboot All"] = true,
 	["Reboot this module."] = "重启此模块",
 	["debug"] = "除错",
 	["Debugging"] = "除错",
 	["Show debug messages."] = "显示除错信息。",
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
 	bosskill_name = "首领死亡",
 	bosskill_desc = "首领死亡时提示",
 
@@ -284,9 +295,11 @@ L:RegisterTranslations("zhTW", function() return {
 	["Active"] = "啟動",
 	["Activate or deactivate this module."] = "開啟或關閉此模組。",
 	["Reboot"] = "重啟",
+	["Reboot All"] = true,
 	["Reboot this module."] = "重啟此模組",
 	["Debugging"] = "除錯",
 	["Show debug messages."] = "顯示除錯訊息。",
+	["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"] = true,
 
 	bosskill_name = "首領死亡",
 	bosskill_desc = "首領被擊敗時發出提示。",
@@ -336,7 +349,7 @@ BigWigs.cmdtable = {type = "group", handler = BigWigs, args = {
 }}
 BigWigs:RegisterChatCommand({"/bw", "/BigWigs"}, BigWigs.cmdtable)
 BigWigs.debugFrame = ChatFrame5
-BigWigs.revision = tonumber(string.sub("$Revision: 18324 $", 12, -3))
+BigWigs.revision = tonumber(string.sub("$Revision: 18326 $", 12, -3))
 
 --------------------------------
 --      Module Prototype      --
@@ -597,11 +610,19 @@ function BigWigs:RegisterModule(name, module)
 						func = function() m.core:TriggerEvent("BigWigs_RebootModule", m) end,
 						hidden = function() return not m.core:IsModuleActive(m) end,
 					},
+					[L["rebootall"]] = {
+						type = "execute",
+						name = L["Reboot All"],
+						desc = L["Forces the module to reset for everyone in the raid.\n\n(Requires assistant or higher)"],
+						order = 3,
+						func = function() if (IsRaidLeader() or IsRaidOfficer()) then m.core:TriggerEvent("BigWigs_SendSync", "RebootModule "..tostring(module)) end end,
+						hidden = function() return not m.core:IsModuleActive(m) end,
+					},
 					[L["debug"]] = {
 						type = "toggle",
 						name = L["Debugging"],
 						desc = L["Show debug messages."],
-						order = 3,
+						order = 4,
 						get = function() return m:IsDebugging() end,
 						set = function(v) m:SetDebugging(v) end,
 						hidden = function() return not m:IsDebugging() and not BigWigs:IsDebugging() end,
@@ -714,6 +735,8 @@ function BigWigs:BigWigs_RecvSync(sync, module)
 	elseif sync == "EnableExternal" and module then
 		local name = BB:HasTranslation(module) and BB[module] or module
 		if self:HasModule(name) and self:GetModule(name).zonename == GetRealZoneText() then self:EnableModule(name, true) end
+	elseif sync == "RebootModule" and module then
+		self:TriggerEvent("BigWigs_RebootModule", module)
 	end
 end
 
