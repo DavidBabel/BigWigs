@@ -30,6 +30,7 @@ L:RegisterTranslations("enUS", function() return {
 	["%s disabled."] = true,
 	["%s icon is now %s."] = true,
 	["Show it again with /bw plugin minimap."] = true,
+	["You need to be an assistant or raid leader to use this function."] = true,
 } end)
 
 L:RegisterTranslations("frFR", function() return {
@@ -50,6 +51,7 @@ L:RegisterTranslations("frFR", function() return {
 	["%s disabled."] = "%s d\195\169sactiv\195\169.",
 	["%s icon is now %s."] = "L'ic\195\180ne de %s est d\195\169sormais %s.",
 	["Show it again with /bw plugin minimap."] = "Vous pouvez la r\195\169afficher avec /bw plugin minimap.",
+	["You need to be an assistant or raid leader to use this function."] = true,
   } end)
   
 L:RegisterTranslations("koKR", function() return {
@@ -69,6 +71,7 @@ L:RegisterTranslations("koKR", function() return {
 	["%s disabled."] = "%s 비활성화 되었습니다.",
 	["%s icon is now %s."] = "%s 아이콘은 현재 %s 입니다.",
 	["Show it again with /bw plugin minimap."] = "/bw plugin minimap 명령으로 다시 나타납니다.",
+	["You need to be an assistant or raid leader to use this function."] = true,
 } end)
 
 L:RegisterTranslations("zhCN", function() return {
@@ -87,6 +90,9 @@ L:RegisterTranslations("zhCN", function() return {
 	["All running modules have been disabled."] = "所有运行中的模块都已关闭。",
 	["%s reset."] = "%s重置。",
 	["%s disabled."] = "%s关闭。",
+	["%s icon is now %s."] = "%s 아이콘은 현재 %s 입니다.",
+	["Show it again with /bw plugin minimap."] = "/bw plugin minimap 명령으로 다시 나타납니다.",
+	["You need to be an assistant or raid leader to use this function."] = true,
 } end)
 
 
@@ -106,6 +112,8 @@ L:RegisterTranslations("zhTW", function() return {
 	["All running modules have been disabled."] = "所有運行中的模組都已關閉。",
 	["%s reset."] = "%s重置。",
 	["%s disabled."] = "%s關閉。",
+	["%s icon is now %s."] = true,
+	["You need to be an assistant or raid leader to use this function."] = true,
 } end)
 
 L:RegisterTranslations("deDE", function() return {
@@ -124,6 +132,8 @@ L:RegisterTranslations("deDE", function() return {
 	["All running modules have been disabled."] = "Alle laufenden Module wurden beendet.",
 	["%s reset."] = "%s zur\195\188ckgesetzt.",
 	["%s disabled."] = "%s beendet.",
+	["%s icon is now %s."] = true,
+	["You need to be an assistant or raid leader to use this function."] = "Du musst Schlachtzugsleiter oder Assistent sein, um diese Funktion zu benutzen.",
 } end)
 
 ----------------------------------
@@ -249,9 +259,13 @@ function BigWigsOptions:OnClick()
 				if module:IsBossModule() and deuce.core:IsModuleActive(module) then
 					if (IsRaidLeader() or IsRaidOfficer()) then
 						deuce.core:TriggerEvent("BigWigs_SendSync", "RebootModule "..tostring(module))
-						self:Print(L["All running modules have been rebooted for all raid members."])
 					end
 				end
+			end
+			if (IsRaidLeader() or IsRaidOfficer()) then
+				self:Print(L["All running modules have been rebooted for all raid members."])
+			else
+				self:Print(L["You need to be an assistant or raid leader to use this function."])
 			end
 		else
 			for name, module in deuce.core:IterateModules() do
