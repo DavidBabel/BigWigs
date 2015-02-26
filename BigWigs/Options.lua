@@ -247,7 +247,7 @@ function BigWigsOptions:OnClick()
 		elseif IsControlKeyDown() then
 			for name, module in deuce.core:IterateModules() do
 				if module:IsBossModule() and deuce.core:IsModuleActive(module) then
-					if (IsRaidLeader() or IsRaidOfficer()) then m.core:TriggerEvent("BigWigs_SendSync", "RebootModule "..tostring(module)) end
+					if (IsRaidLeader() or IsRaidOfficer()) then deuce.core:TriggerEvent("BigWigs_SendSync", "RebootModule "..tostring(module)) end
 				end
 			end
 			self:Print(L["All running modules have been rebooted for all raid members."])
