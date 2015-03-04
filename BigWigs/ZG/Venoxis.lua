@@ -245,7 +245,6 @@ function BigWigsVenoxis:CHAT_MSG_SPELL_AURA_GONE_OTHER(msg)
 	end
 end
 
-
 function BigWigsVenoxis:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
 	if string.find(msg, L["deadaddtrigger"]) then
 		self:TriggerEvent("BigWigs_SendSync", "VenoxisAddDead")
