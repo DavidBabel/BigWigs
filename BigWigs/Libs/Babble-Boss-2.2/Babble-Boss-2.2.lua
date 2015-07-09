@@ -358,7 +358,7 @@ end)
 
 BabbleBoss:RegisterTranslations("deDE", function()
 	return {
-		["Stoneskin Gargoyle"] = true,
+		["Stoneskin Gargoyle"] = "Stoneskin Gargoyle",
 		["Avalanchion"] = "Avalanchion",
 		["The Windreaver"] = "Der Windpl\195\188nderer",
 		["Baron Charr"] = "Baron Charr",
