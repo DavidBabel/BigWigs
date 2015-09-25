@@ -96,7 +96,7 @@ BigWigsMajordomo.zonename = AceLibrary("Babble-Zone-2.2")["Molten Core"]
 BigWigsMajordomo.enabletrigger = boss
 BigWigsMajordomo.wipemobs = { L["elitename"], L["healername"] }
 BigWigsMajordomo.toggleoptions = {"magic", "dmg", "adds", "bosskill"}
-BigWigsMajordomo.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
+BigWigsMajordomo.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -120,6 +120,7 @@ function BigWigsMajordomo:OnEnable()
 end
 
 function BigWigsMajordomo:VerifyEnable(unit)
+	if GetSubZoneText() == "Ragnaros\' Lair" and not UnitCanAttack("player", unit) then self:TriggerEvent("BigWigs_TargetSeen", "Ragnaros", unit) end -- peenix y u do dis?
 	return UnitCanAttack("player", unit)
 end
 
