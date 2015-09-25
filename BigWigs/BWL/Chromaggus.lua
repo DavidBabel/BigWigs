@@ -4,7 +4,6 @@
 
 local boss = AceLibrary("Babble-Boss-2.2")["Chromaggus"]
 local L = AceLibrary("AceLocale-2.2"):new("BigWigs"..boss)
-local twenty
 
 ----------------------------
 --      Localization      --
@@ -15,33 +14,36 @@ L:RegisterTranslations("enUS", function() return {
 
 	enrage_cmd = "enrage",
 	enrage_name = "Enrage",
-	enrage_desc = "Warn before Enrage at 20%",
+	enrage_desc = "Warn before the Enrage phase at 20%.",
 
 	frenzy_cmd = "frenzy",
-	frenzy_name = "Frenzy Alert",
-	frenzy_desc = "Warn for Frenzy",
+	frenzy_name = "Frenzy",
+	frenzy_desc = "Warn for Frenzy.",
 
 	breath_cmd = "breath",
-	breath_name = "Breath Alerts",
-	breath_desc = "Warn for Breaths",
+	breath_name = "Breaths",
+	breath_desc = "Warn for Breaths.",
 
 	vulnerability_cmd = "vulnerability",
-	vulnerability_name = "Vulnerability Alerts",
-	vulnerability_desc = "Warn for Vulnerability changes",
+	vulnerability_name = "Vulnerability",
+	vulnerability_desc = "Warn for Vulnerability changes.",
 
-	breath_trigger = "^Chromaggus begins to cast ([%w ]+)\.",
-	vulnerability_test = "^[%w']+ [%w' ]+ ([%w]+) Chromaggus for ([%d]+) ([%w ]+) damage%..*",
-	frenzy_trigger = "%s goes into a killing frenzy!",
-	vulnerability_trigger = "%s flinches as its skin shimmers.",
+	breath_trigger = "Chromaggus begins to cast (.+)\.",
+	vulnerability_direct_test = "^[%w]+[%s's]* ([%w%s:]+) ([%w]+) Chromaggus for ([%d]+) ([%w]+) damage%.[%s%(]*([%d]*)",
+	vulnerability_dots_test = "^Chromaggus suffers ([%d]+) ([%w]+) damage from [%w]+[%s's]* ([%w%s:]+)%.[%s%(]*([%d]*)",
+	frenzy_trigger = "goes into a killing frenzy",
+	frenzyfade_trigger = "Frenzy fades from Chromaggus\.",
+	vulnerability_trigger = "flinches as its skin shimmers.",
 
 	hit = "hits",
 	crit = "crits",
 
-	breath_warning = "%s in 10 seconds!",
+	firstbreaths_warning = "Breath in 5 seconds!",
+	breath_warning = "%s in 5 seconds!",
 	breath_message = "%s is casting!",
 	vulnerability_message = "Vulnerability: %s!",
 	vulnerability_warning = "Spell vulnerability changed!",
-	frenzy_message = "Frenzy Alert!",
+	frenzy_message = "Frenzy! TRANQ NOW!",
 	enrage_warning = "Enrage soon!",
 
 	breath1 = "Time Lapse",
@@ -49,8 +51,13 @@ L:RegisterTranslations("enUS", function() return {
 	breath3 = "Ignite Flesh",
 	breath4 = "Incinerate",
 	breath5 = "Frost Burn",
+	
+	breathcolor1 = "black",
+	breathcolor2 = "green",
+	breathcolor3 = "orange",
+	breathcolor4 = "red",
+	breathcolor5 = "blue",
 
-	iconunknown = "Interface\\Icons\\INV_Misc_QuestionMark",
 	icon1 = "Interface\\Icons\\Spell_Arcane_PortalOrgrimmar",
 	icon2 = "Interface\\Icons\\Spell_Nature_Acid_01",
 	icon3 = "Interface\\Icons\\Spell_Fire_Fire",
@@ -58,12 +65,25 @@ L:RegisterTranslations("enUS", function() return {
 	icon5 = "Interface\\Icons\\Spell_Frost_ChillingBlast",
 
 	castingbar = "Cast %s",
-
+	frenzy_bar = "Frenzy",
+	first_bar = "First Breath",
+	second_bar = "Second Breath",
+	
+	fire = "Fire",
+	frost = "Frost",
+	shadow = "Shadow",
+	nature = "Nature",
+	arcane = "Arcane",
+	
+	curseofdoom = "Curse of Doom",
+	ignite = "Ignite",
+	starfire = "Starfire",
+	thunderfury = "Thunderfury",
 } end )
 
 L:RegisterTranslations("deDE", function() return {
 	enrage_name = "Wutanfall",
-	enrage_desc = "Warnung, wenn Chromaggus w\195\188tend wird. (ab 20%).",
+	enrage_desc = "Warnung, wenn Chromaggus w\195\188tend wird (ab 20%).",
 
 	frenzy_name = "Raserei",
 	frenzy_desc = "Warnung, wenn Chromaggus in Raserei ger\195\164t.",
@@ -74,17 +94,20 @@ L:RegisterTranslations("deDE", function() return {
 	vulnerability_name = "Zauber-Verwundbarkeiten",
 	vulnerability_desc = "Warnung, wenn Chromagguss Zauber-Verwundbarkeit sich \195\164ndert.",
 
-	breath_trigger = "^Chromaggus beginnt (.+) zu wirken%.",
-	vulnerability_test = "^[^%s]+ .* trifft Chromaggus(.+)f\195\188r ([%d]+) ([%w ]+)'schaden%..*", -- ?
-	frenzy_trigger = "%s ger\195\164t in t\195\182dliche Raserei!",
-	vulnerability_trigger = "%s weicht zur\195\188ck, als die Haut schimmert.",
+	breath_trigger = "^Chromaggus beginnt (.+) zu wirken\.",
+	vulnerability_direct_test = "^(.+) trifft Chromaggus(.+) ([%d]+) ([%w]+)%.[%s%(]*([%d]*)",
+	vulnerability_dots_test = "^Chromaggus erleidet ([%d]+) ([%w]+)schaden[%svon]*[%s%w]* %(durch ([%w%s:]+)%)%.[%s%(]*([%d]*)",
+	frenzy_trigger = "goes into a killing frenzy",
+	frenzyfade_trigger = "Raserei schwindet von Chromaggus\.",
+	vulnerability_trigger = "flinches as its skin shimmers.",
 
 	hit = "trifft",
 	crit = "kritisch",
 
-	breath_warning = "%s in 10 Sekunden!",
+	firstbreaths_warning = "Atem in 5 Sekunden!",
+	breath_warning = "%s in 5 Sekunden!",
 	breath_message = "Chromaggus wirkt: %s Atem!",
-	vulnerability_message = "Neue Zauber-Verwundbarkeit: %s",
+	vulnerability_message = "Zauber-Verwundbarkeit: %s",
 	vulnerability_warning = "Zauber-Verwundbarkeit ge\195\164ndert!",
 	frenzy_message = "Raserei - Einlullender Schuss!",
 	enrage_warning = "Wutanfall steht kurz bevor!",
@@ -95,162 +118,33 @@ L:RegisterTranslations("deDE", function() return {
 	breath4 = "Verbrennen",
 	breath5 = "Frostbeulen",
 
+	breathcolor1 = "black",
+	breathcolor2 = "green",
+	breathcolor3 = "orange",
+	breathcolor4 = "red",
+	breathcolor5 = "blue",
+
+	icon1 = "Interface\\Icons\\Spell_Arcane_PortalOrgrimmar",
+	icon2 = "Interface\\Icons\\Spell_Nature_Acid_01",
+	icon3 = "Interface\\Icons\\Spell_Fire_Fire",
+	icon4 = "Interface\\Icons\\Spell_Shadow_ChillTouch",
+	icon5 = "Interface\\Icons\\Spell_Frost_ChillingBlast",
+
 	castingbar = "Wirkt %s",
-} end )
-
-L:RegisterTranslations("zhCN", function() return {
-	enrage_name = "激怒警报",
-	enrage_desc = "20%生命激怒前发出警报。",
-
-	frenzy_name = "狂暴警报",
-	frenzy_desc = "狂暴警报",
-
-	breath_name = "吐息警报",
-	breath_desc = "吐息警报",
-
-	vulnerability_name = "弱点警报",
-	vulnerability_desc = "克洛玛古斯弱点改变时发出警报",
-
-	breath_trigger = "^克洛玛古斯开始施放(.+)。",
-	vulnerability_test = "^.+的.+(.+)克洛玛古斯.+(%d+)点(.+)伤害。",
-
-	frenzy_trigger = "%s变得极为狂暴！",
-	vulnerability_trigger = "%s的皮肤闪着微光",
-
-	hit = "使",
-	crit = "致命一击对",
-
-	breath_warning = "%s - 10秒后施放！",
-	breath_message = "克洛玛古斯 %s！",
-	vulnerability_message = "克洛玛古斯新弱点：%s",
-	vulnerability_warning = "克洛玛古斯弱点改变",
-	frenzy_message = "狂暴警报 - 猎人立刻使用宁神射击！",
-	enrage_warning = "即将激怒！",
-
-	breath1 = "时间流逝",
-	breath2 = "腐蚀酸液",
-	breath3 = "点燃躯体",
-	breath4 = "焚烧",
-	breath5 = "冰霜灼烧",
-
-	castingbar = "施放 %s",
-} end )
-
-L:RegisterTranslations("zhTW", function() return {
-	enrage_name = "狂暴警報",
-	enrage_desc = "當克洛瑪古斯生命值剩 20% ，狂暴時發出警報。",
-
-	frenzy_name = "狂怒警報",
-	frenzy_desc = "當克洛瑪古斯狂怒時發出警報",
-
-	breath_name = "吐息警報",
-	breath_desc = "當克洛瑪古斯吐息時發出警報",
-
-	vulnerability_name = "弱點改變警報",
-	vulnerability_desc = "當克洛瑪古斯弱點改變時發出警報",
-
-	breath_trigger = "^克洛瑪古斯開始施放(.+)。",
-	vulnerability_test = "^.+的.+克洛瑪古斯(.+)成(%d+)點(......)傷害。",
-	frenzy_trigger = "%s變得極為狂暴！", --完全比對
-	vulnerability_trigger = "%s因皮膚閃著微光而驚訝退縮。", --完全比對
-
-	hit = "造",
-	crit = "致命一擊造",
-
-	breath_warning = "%s - 10 秒後施放！",
-	breath_message = "克洛瑪古斯施放：%s ！",
-	vulnerability_message = "克洛瑪古斯新弱點：%s ！",
-	vulnerability_warning = "克洛瑪古斯弱點改變",
-	frenzy_message = "狂怒警報 - 獵人立刻使用寧神射擊！",
-	enrage_warning = "即將暴怒！",
-
-	breath1 = "時間流逝",
-	breath2 = "腐蝕酸液",
-	breath3 = "點燃軀體",
-	breath4 = "燒盡",
-	breath5 = "冰霜灼燒",
-
-	castingbar = "施放 %s",
-	-- about vulnerability_test
-	-- 誰的什麼法術擊中克洛瑪古斯    造    成 幾  點  哪種  傷害。 <-法術hit描述,空白為對照用
-	-- 誰的什麼法術對  克洛瑪古斯致命一擊造成 幾  點  哪種  傷害。 <-法術crit描述,空白為對照用
-	-- .+的   .+       克洛瑪古斯   (.+)   成(%d+)點(......)傷害。 ，這樣修改可以不用動到程式。
-	-- drop  drop                   type      dmg   school     多抓一個"造"字是因type不能為空.又,判斷對跟擊中的話,要改程式碼(像koKR的做法)
-	-- 原判斷句型會誤判其他近戰的暴擊句型，造成school抓出"致命一擊"字樣。
-	-- 最後一個變數從(.+)改為(......)，法術傷害只有兩個中文字，編碼為utf8所以是6個"."。
-	-- whoever added the above, do we still need it? if we dont please remove :)
-} end )
-
-L:RegisterTranslations("koKR", function() return {
-	enrage_name = "격노",
-	enrage_desc = "20% 격노 전 경고",
-
-	frenzy_name = "광폭화 경고",
-	frenzy_desc = "광폭화에 대한 경고",
-
-	breath_name = "브레스 경고",
-	breath_desc = "브레스에 대한 경고",
-
-	vulnerability_name = "약화 속성 경고",
-	vulnerability_desc = "약화 속성 변경에 대한 경고",
-
-	breath_trigger = "크로마구스|1이;가; (.+)|1을;를; 시전합니다.",
-	vulnerability_test = "(.+)|1으로;로; 크로마구스에게 (%d+)의 ([^%s]+) (.*)피해를 입혔습니다.",
-	frenzy_trigger = "%s|1이;가; 살기를 띤 듯한 광란의 상태에 빠집니다!",
-	vulnerability_trigger = "%s|1이;가; 주춤하면서 물러나면서 가죽이 빛납니다.", --"가죽이 점점 빛나면서 물러서기 시작합니다.",
-
-	hit = "",
-	crit = "치명상 ",
-
-	breath_warning = "%s 10초전!",
-	breath_message = "%s 시전!",
-	vulnerability_message = "새로운 취약 속성: %s",
-	vulnerability_warning = "취약 속성이 변경되었습니다!",
-	frenzy_message = "광폭화 - 평정 사격!",
-	enrage_warning = "격노 경고!",
-
-	breath1 = "시간의 쇠퇴",
-	breath2 = "부식성 산",
-	breath3 = "살점 태우기",
-	breath4 = "소각",
-	breath5 = "동결",
-
-	castingbar = "%s 시전",
-} end )
-
-L:RegisterTranslations("frFR", function() return {
-	enrage_name = "Alerte Enrag\195\169",
-	enrage_desc = "Pr\195\169viens quand Chromaggus s'enrage (\195\160 20%).",
-
-	frenzy_name = "Alerte Fr\195\169n\195\169sie",
-	frenzy_desc = "Pr\195\169viens quand Chromaggus entre dans des fr\195\169n\195\169sies sanglantes.",
-
-	breath_name = "Alerte Souffles",
-	breath_desc = "Pr\195\169viens quand Chromaggus souffle ainsi que leurs types.",
-
-	vulnerability_name = "Alerte Vuln\195\169rabilit\195\169s",
-	vulnerability_desc = "Pr\195\169viens quand la vuln\195\169rabilit\195\169 de Chromaggus change.",
-
-	breath_trigger = "^Chromaggus commence \195\160 lancer (.+)%.",
-	vulnerability_test = "^.+ lance .+ et (.+) \195\160 Chromaggus %(([%d]+) points de d\195\169g\195\162ts .+ (.+)%)%.";
-	frenzy_trigger = "%s entre dans une fr\195\169n\195\169sie sanglante !",
-	vulnerability_trigger = "%s grimace lorsque sa peau se met \195\160 briller.",
-
-	hit = "lui inflige",
-	crit = "inflige un coup critique",
-
-	breath_warning = "%s dans 10 sec. !",
-	breath_message = "%s en cours d'incantation !",
-	vulnerability_message = "Vulnerabilit\195\169 : %s !",
-	vulnerability_warning = "Vuln\195\169rabilit\195\169 aux sorts modifi\195\169e !",
-	frenzy_message = "Alerte fr\195\169n\195\169sie !",
-	enrage_warning = "Enragement imminent !",
-
-	breath1 = "Trou de temps",
-	breath2 = "Acide corrosif",
-	breath3 = "Enflammer la chair",
-	breath4 = "Incin\195\169rer",
-	breath5 = "Br\195\187lure de givre",
+	frenzy_bar = "Raserei",
+	first_bar = "Erster Atem",
+	second_bar = "Zweite Atem",
+	
+	fire = "Feuer",
+	frost = "Frost",
+	shadow = "Schatten",
+	nature = "Natur",
+	arcane = "Arkan",
+	
+	curseofdoom = "Fluch der Verdammnis",
+	ignite = "Entz\195\188nden",
+	starfire = "Sternenfeuer",
+	thunderfury = "Zorn der Winde",
 } end )
 
 ----------------------------------
@@ -261,37 +155,45 @@ BigWigsChromaggus = BigWigs:NewModule(boss)
 BigWigsChromaggus.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsChromaggus.enabletrigger = boss
 BigWigsChromaggus.toggleoptions = { "enrage", "frenzy", "breath", "vulnerability", "bosskill"}
-BigWigsChromaggus.revision = tonumber(string.sub("$Revision: 17909 $", 12, -3))
+BigWigsChromaggus.revision = tonumber(string.sub("$Revision: 11210 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
 ------------------------------
 
 function BigWigsChromaggus:OnEnable()
-	-- in the module itself for resetting via schedule
 	self.vulnerability = nil
 	twenty = nil
+	started = nil
+	frenzied = nil
 
 	self:RegisterEvent("CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE")
+	self:RegisterEvent("CHAT_MSG_SPELL_AURA_GONE_OTHER")
 	self:RegisterEvent("CHAT_MSG_MONSTER_EMOTE")
+	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_CREATURE_DAMAGE")
 	self:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE", "PlayerDamageEvents")
 	self:RegisterEvent("CHAT_MSG_SPELL_PET_DAMAGE", "PlayerDamageEvents")
 	self:RegisterEvent("CHAT_MSG_SPELL_PARTY_DAMAGE", "PlayerDamageEvents")
 	self:RegisterEvent("CHAT_MSG_SPELL_FRIENDLYPLAYER_DAMAGE", "PlayerDamageEvents")
 	self:RegisterEvent("CHAT_MSG_COMBAT_HOSTILE_DEATH", "GenericBossDeath")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "CheckForEngage")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 	self:RegisterEvent("UNIT_HEALTH")
 
 	self:RegisterEvent("BigWigs_RecvSync")
-	self:TriggerEvent("BigWigs_ThrottleSync", "ChromaggusBreath", 10)
+	self:TriggerEvent("BigWigs_ThrottleSync", "ChromaggusEngage", 10)
+	self:TriggerEvent("BigWigs_ThrottleSync", "ChromaggusBreath", 20)
+	self:TriggerEvent("BigWigs_ThrottleSync", "ChromaggusFrenzyStart", 5)
+	self:TriggerEvent("BigWigs_ThrottleSync", "ChromaggusFrenzyStop", 5)
 end
 
 function BigWigsChromaggus:UNIT_HEALTH( msg )
 	if self.db.profile.enrage and UnitName(msg) == boss then
 		local health = UnitHealth(msg)
-		if health > 20 and health <= 23 and not twenty then
-			if self.db.profile.enrage then self:TriggerEvent("BigWigs_Message", L["enrage_warning"], "Important") end
+		if health > 431240 and health <= 495926 and not twenty then
+			self:TriggerEvent("BigWigs_Message", L["enrage_warning"], "Important")
 			twenty = true
-		elseif health > 40 and twenty then
+		elseif health > 862480 and twenty then
 			twenty = nil
 		end
 	end
@@ -307,51 +209,241 @@ function BigWigsChromaggus:CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE( msg )
 	end
 end
 
-function BigWigsChromaggus:BigWigs_RecvSync(sync, spellId)
-	if sync ~= "ChromaggusBreath" or not spellId or not self.db.profile.breath then return end
-
-	local spellName = L:HasTranslation("breath"..spellId) and L["breath"..spellId] or nil
-	if not spellName then return end
-
-	self:TriggerEvent("BigWigs_StartBar", self, string.format( L["castingbar"], spellName), 2 )
-	self:TriggerEvent("BigWigs_Message", string.format(L["breath_message"], spellName), "Important")
-	self:ScheduleEvent("bwchromaggusbreath"..spellName, "BigWigs_Message", 50, string.format(L["breath_warning"], spellName), "Important")
-	self:TriggerEvent("BigWigs_StartBar", self, spellName, 60, L["icon"..spellId])
+function BigWigsChromaggus:BigWigs_RecvSync(sync, rest, nick)
+	if sync == "BossEngaged" and rest == "Chromaggus" and not started then
+		started = true
+		if self.db.profile.breath then
+			self:ScheduleEvent("BigWigs_Message", 25, L["firstbreaths_warning"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["first_bar"], 30, "Interface\\Icons\\INV_Misc_QuestionMark", true, "cyan")
+			self:ScheduleEvent("BigWigs_Message", 55, L["firstbreaths_warning"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["second_bar"], 60, "Interface\\Icons\\INV_Misc_QuestionMark", true, "cyan")
+		end
+		self:TriggerEvent("BigWigs_SendSync", "ChromaggusEngage")
+	elseif sync == "ChromaggusEngage" and not started then
+		started = true
+		if self.db.profile.breath then
+			self:ScheduleEvent("BigWigs_Message", 24.9, L["firstbreaths_warning"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["first_bar"], 29.9, "Interface\\Icons\\INV_Misc_QuestionMark", true, "cyan")
+			self:ScheduleEvent("BigWigs_Message", 54.9, L["firstbreaths_warning"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["second_bar"], 59.9, "Interface\\Icons\\INV_Misc_QuestionMark", true, "cyan")
+		end
+	elseif sync == "ChromaggusBreath" and self.db.profile.breath then
+		local spellName = L:HasTranslation("breath"..rest) and L["breath"..rest] or nil
+		if not spellName then return end
+		self:TriggerEvent("BigWigs_StartBar", self, string.format( L["castingbar"], spellName), 2, L["icon"..rest])
+		self:TriggerEvent("BigWigs_Message", string.format(L["breath_message"], spellName), "Important")
+		self:ScheduleEvent("bwchromaggusbreath"..spellName, "BigWigs_Message", 55, string.format(L["breath_warning"], spellName), "Important")
+		self:TriggerEvent("BigWigs_StartBar", self, spellName, 60, L["icon"..rest], true, L["breathcolor"..rest])
+	elseif sync == "ChromaggusFrenzyStart" then
+		if self.db.profile.frenzy and not frenzied then
+			self:TriggerEvent("BigWigs_Message", L["frenzy_message"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["frenzy_bar"], 8, "Interface\\Icons\\Ability_Druid_ChallangingRoar", true, "white")
+		end
+		frenzied = true
+	elseif sync == "ChromaggusFrenzyStop" then
+		if self.db.profile.frenzy and frenzied then
+			self:TriggerEvent("BigWigs_StopBar", self, L["frenzy_bar"])
+		end
+		frenzied = nil
+	end
 end
 
 function BigWigsChromaggus:CHAT_MSG_MONSTER_EMOTE(msg)
-	if msg == L["frenzy_trigger"] and self.db.profile.frenzy then
-		self:TriggerEvent("BigWigs_Message", L["frenzy_message"], "Important")
-	elseif msg == L["vulnerability_trigger"] then
+	if string.find(msg, L["frenzy_trigger"]) and arg2 == boss then
+		if self.db.profile.frenzy and not frenzied then
+			self:TriggerEvent("BigWigs_Message", L["frenzy_message"], "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, L["frenzy_bar"], 8, "Interface\\Icons\\Ability_Druid_ChallangingRoar", true, "white")
+		end
+		frenzied = true
+		self:TriggerEvent("BigWigs_SendSync", "ChromaggusFrenzyStart")
+	elseif string.find(msg, L["vulnerability_trigger"]) then
 		if self.db.profile.vulnerability then
 			self:TriggerEvent("BigWigs_Message", L["vulnerability_warning"], "Positive")
 		end
-		self:ScheduleEvent(function() BigWigsChromaggus.vulnerability = nil end, 2.5)
+		self.vulnerability = nil
 	end
 end
 
-if (GetLocale() == "koKR") then
-	function BigWigsChromaggus:PlayerDamageEvents(msg)
-		if (not self.vulnerability) then
-			local _,_,_, dmg, school, type = string.find(msg, L["vulnerability_test"])
-			if ( type == L["hit"] or type == L["crit"] ) and tonumber(dmg or "") and school then
-				if (tonumber(dmg) >= 550 and type == L["hit"]) or (tonumber(dmg) >= 1100 and type == L["crit"]) then
-					self.vulnerability = school
-					if self.db.profile.vulnerability then self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive") end
-				end
-			end
+function BigWigsChromaggus:CHAT_MSG_SPELL_AURA_GONE_OTHER(msg)
+	if msg == L["frenzyfade_trigger"] then
+		if self.db.profile.frenzy and frenzied then
+			self:TriggerEvent("BigWigs_StopBar", self, L["frenzy_bar"])
 		end
+		frenzied = nil
+		self:TriggerEvent("BigWigs_SendSync", "ChromaggusFrenzyStop")
 	end
-else
-	function BigWigsChromaggus:PlayerDamageEvents(msg)
-		if (not self.vulnerability) then
-			local _,_, type, dmg, school = string.find(msg, L["vulnerability_test"])
-			if ( type == L["hit"] or type == L["crit"] ) and tonumber(dmg or "") and school then
-				if (tonumber(dmg) >= 550 and type == L["hit"]) or (tonumber(dmg) >= 1100 and type == L["crit"]) then
-					self.vulnerability = school
-					if self.db.profile.vulnerability then self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive") end
+end
+
+function BigWigsChromaggus:CHAT_MSG_SPELL_PERIODIC_CREATURE_DAMAGE(msg)
+	if not self.db.profile.vulnerability then return end
+	if not self.vulnerability then
+		local _, _, dmg, school, userspell, partial = string.find(msg, L["vulnerability_dots_test"])
+		if dmg and school and userspell then
+			if school == L["arcane"] then
+				if partial and partial ~= "" then
+					if tonumber(dmg)+tonumber(partial) >= 250 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if tonumber(dmg) >= 250 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			elseif school == L["fire"] and not string.find(userspell, L["ignite"]) then
+				if partial and partial ~= "" then
+					if tonumber(dmg)+tonumber(partial) >= 400 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if tonumber(dmg) >= 400 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			elseif school == L["nature"] then
+				if partial and partial ~= "" then
+					if tonumber(dmg)+tonumber(partial) >= 300 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if tonumber(dmg) >= 300 then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			elseif school == L["shadow"] then
+				if string.find(userspell, L["curseofdoom"]) then
+					if partial and partial ~= "" then
+						if tonumber(dmg)+tonumber(partial) >= 3000 then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if tonumber(dmg) >= 3000 then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
+				else
+					if partial and partial ~= "" then
+						if tonumber(dmg)+tonumber(partial) >= 500 then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if tonumber(dmg) >= 500 then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
 				end
 			end
 		end
 	end
 end
+
+function BigWigsChromaggus:PlayerDamageEvents(msg)
+	if not self.db.profile.vulnerability then return end
+	if not self.vulnerability then
+		local _, _, userspell, stype, dmg, school, partial = string.find(msg, L["vulnerability_direct_test"])
+		if GetLocale() == "deDE" then
+			if string.find(stype, L["crit"]) then stype = L["crit"] else stype = L["hit"] end
+			school = string.gsub(school, "schaden", "")
+		end
+		if stype and dmg and school then
+			if school == L["arcane"] then
+				if string.find(userspell, L["starfire"]) then
+					if partial and partial ~= "" then
+						if (tonumber(dmg)+tonumber(partial) >= 800 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if (tonumber(dmg) >= 800 and stype == L["hit"]) or (tonumber(dmg) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
+				else
+					if partial and partial ~= "" then
+						if (tonumber(dmg)+tonumber(partial) >= 600 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if (tonumber(dmg) >= 600 and stype == L["hit"]) or (tonumber(dmg) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
+				end
+			elseif school == L["fire"] then
+				if partial and partial ~= "" then
+					if (tonumber(dmg)+tonumber(partial) >= 1300 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 2600 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if (tonumber(dmg) >= 1300 and stype == L["hit"]) or (tonumber(dmg) >= 2600 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			elseif school == L["frost"] then
+				if partial and partial ~= "" then
+					if (tonumber(dmg)+tonumber(partial) >= 800 and stype == L["hit"])	or (tonumber(dmg)+tonumber(partial) >= 1600 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if (tonumber(dmg) >= 800 and stype == L["hit"]) or (tonumber(dmg) >= 1600 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			elseif school == L["nature"] then
+				if string.find(userspell, L["thunderfury"]) then
+					if partial and partial ~= "" then
+						if (tonumber(dmg)+tonumber(partial) >= 800 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if (tonumber(dmg) >= 800 and stype == L["hit"]) or (tonumber(dmg) >= 1200 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
+				else
+					if partial and partial ~= "" then
+						if (tonumber(dmg)+tonumber(partial) >= 1300 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 2600 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					else
+						if (tonumber(dmg) >= 1300 and stype == L["hit"]) or (tonumber(dmg)>= 2600 and stype == L["crit"]) then
+							self.vulnerability = school
+							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+						end
+					end
+				end
+			elseif school == L["shadow"] then
+				if partial and partial ~= "" then
+					if (tonumber(dmg)+tonumber(partial) >= 1700 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 3400 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				else
+					if (tonumber(dmg) >= 1700 and stype == L["hit"]) or (tonumber(dmg) >= 3400 and stype == L["crit"]) then
+						self.vulnerability = school
+						self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
+					end
+				end
+			end
+		end
+	end
+ end
