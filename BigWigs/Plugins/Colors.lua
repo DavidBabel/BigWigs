@@ -1,4 +1,4 @@
-﻿assert(BigWigs, "BigWigs not found!")
+assert(BigWigs, "BigWigs not found!")
 
 ------------------------------
 --      Are you local?      --
@@ -40,6 +40,7 @@ L:RegisterTranslations("enUS", function() return {
 
 	["Important"] = true,
 	["Personal"] = true,
+	["Twilight"] = true,
 	["Urgent"] = true,
 	["Attention"] = true,
 	["Positive"] = true,
@@ -204,6 +205,7 @@ L:RegisterTranslations("deDE", function() return {
 
 	["Important"] = "Wichtig",
 	["Personal"] = "Pers\195\182hnlich",
+	["Purple"] = "Lila",
 	["Urgent"] = "Dringend",
 	["Attention"] = "Achtung",
 	["Positive"] = "Positiv",
@@ -265,6 +267,7 @@ BigWigsColors = BigWigs:NewModule(L["Colors"])
 BigWigsColors.defaultDB = {
 	important = "ff0000", -- Red
 	personal = "ff0000", -- Red
+	purple = "660099", -- Purple
 	urgent = "ff7f00", -- Orange
 	attention = "ffff00", -- Yellow
 	positive = "00ff00", -- Green
@@ -304,13 +307,21 @@ BigWigsColors.consoleOptions = {
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.personal = hex end,
 					order = 2,
 				},
+				[L["Twilight"]] = {
+					name = L["Twilight"],
+					type = "color",
+					desc = string.format(L["Change the color for \"%s\" messages."], L["Twilight"]),
+					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.purple); return r, g, b end,
+					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.purple = hex end,
+					order = 3,
+				},
 				[L["Urgent"]] = {
 					name = L["Urgent"],
 					type = "color",
 					desc = string.format(L["Change the color for \"%s\" messages."], L["Urgent"]),
 					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.urgent); return r, g, b end,
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.urgent = hex end,
-					order = 3,
+					order = 4,
 				},
 				[L["Attention"]] = {
 					name = L["Attention"],
@@ -318,7 +329,7 @@ BigWigsColors.consoleOptions = {
 					desc = string.format(L["Change the color for \"%s\" messages."], L["Attention"]),
 					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.attention); return r, g, b end,
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.attention = hex end,
-					order = 4,
+					order = 5,
 				},
 				[L["Positive"]] = {
 					name = L["Positive"],
@@ -326,7 +337,7 @@ BigWigsColors.consoleOptions = {
 					desc = string.format(L["Change the color for \"%s\" messages."], L["Positive"]),
 					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.positive); return r, g, b end,
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.positive = hex end,
-					order = 5,
+					order = 6,
 				},
 				[L["Bosskill"]] = {
 					name = L["Bosskill"],
@@ -334,7 +345,7 @@ BigWigsColors.consoleOptions = {
 					desc = string.format(L["Change the color for \"%s\" messages."], L["Bosskill"]),
 					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.bosskill); return r, g, b end,
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.bosskill = hex end,
-					order = 6,
+					order = 7,
 				},
 				[L["Core"]] = {
 					name = L["Core"],
@@ -342,7 +353,7 @@ BigWigsColors.consoleOptions = {
 					desc = string.format(L["Change the color for \"%s\" messages."], L["Core"]),
 					get = function() local _, r, g, b = PaintChips:GetRGBPercent(BigWigsColors.db.profile.core); return r, g, b end,
 					set = function(r, g, b) local hex = BigWigsColors:RGBToHex(r, g, b); PaintChips:RegisterHex(hex); BigWigsColors.db.profile.core = hex end,
-					order = 7,
+					order = 8,
 				},
 			},
 		},
@@ -499,6 +510,7 @@ end
 function BigWigsColors:ResetDB()
 	BigWigsColors.db.profile.important = BigWigsColors.defaultDB.important
 	BigWigsColors.db.profile.personal = BigWigsColors.defaultDB.personal
+	BigWigsColors.db.profile.purple = BigWigsColors.defaultDB.purple
 	BigWigsColors.db.profile.urgent = BigWigsColors.defaultDB.urgent
 	BigWigsColors.db.profile.attention = BigWigsColors.defaultDB.attention
 	BigWigsColors.db.profile.positive = BigWigsColors.defaultDB.positive
@@ -540,6 +552,7 @@ end
 function BigWigsColors:MsgColor(type)
 	-- Make it compatible with old code
 	if type == "Red" then type = self.db.profile.important
+	elseif type == "Purple" then type = self.db.profile.purple
 	elseif type == "Orange" then type = self.db.profile.urgent
 	elseif type == "Yellow" then type = self.db.profile.attention
 	elseif type == "Green" then type = self.db.profile.positive
@@ -547,6 +560,7 @@ function BigWigsColors:MsgColor(type)
 
 	if type == "Important" then type = self.db.profile.important
 	elseif type == "Personal" then type = self.db.profile.personal
+	elseif type == "Purple" then type = self.db.profile.purple
 	elseif type == "Urgent" then type = self.db.profile.urgent
 	elseif type == "Attention" then type = self.db.profile.attention
 	elseif type == "Positive" then type = self.db.profile.positive
