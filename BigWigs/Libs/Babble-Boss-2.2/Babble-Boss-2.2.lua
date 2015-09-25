@@ -304,7 +304,7 @@ BabbleBoss:RegisterTranslations("deDE", function()
 		["High Priest Venoxis"] = "High Priest Venoxis",
 		["High Priest Thekal"] = "High Priest Thekal",
 		["High Priestess Arlokk"] = "High Priestess Arlokk",
-		["High Priestess Mar'li"] = "High Priestess Mar''li",
+		["High Priestess Mar'li"] = "High Priestess Mar'li",
 		["Gahz'ranka"] = "Gahz'ranka",
 		["Gri'lek"] = "Gri'lek",
 		["Hazza'rah"] = "Hazza'rah",
