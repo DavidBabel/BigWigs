@@ -155,7 +155,7 @@ BigWigsChromaggus = BigWigs:NewModule(boss)
 BigWigsChromaggus.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsChromaggus.enabletrigger = boss
 BigWigsChromaggus.toggleoptions = { "enrage", "frenzy", "breath", "vulnerability", "bosskill"}
-BigWigsChromaggus.revision = tonumber(string.sub("$Revision: 11210 $", 12, -3))
+BigWigsChromaggus.revision = tonumber(string.sub("$Revision: 11211 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -420,12 +420,12 @@ function BigWigsChromaggus:PlayerDamageEvents(msg)
 					end
 				else
 					if partial and partial ~= "" then
-						if (tonumber(dmg)+tonumber(partial) >= 1300 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 2600 and stype == L["crit"]) then
+						if (tonumber(dmg)+tonumber(partial) >= 900 and stype == L["hit"]) or (tonumber(dmg)+tonumber(partial) >= 1800 and stype == L["crit"]) then
 							self.vulnerability = school
 							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
 						end
 					else
-						if (tonumber(dmg) >= 1300 and stype == L["hit"]) or (tonumber(dmg)>= 2600 and stype == L["crit"]) then
+						if (tonumber(dmg) >= 900 and stype == L["hit"]) or (tonumber(dmg)>= 1800 and stype == L["crit"]) then
 							self.vulnerability = school
 							self:TriggerEvent("BigWigs_Message", format(L["vulnerability_message"], school), "Positive")
 						end
