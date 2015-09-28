@@ -1,4 +1,4 @@
-﻿------------------------------
+------------------------------
 --      Are you local?      --
 ------------------------------
 
@@ -120,12 +120,12 @@ function BigWigsFlamegor:BigWigs_RecvSync(sync, rest, nick)
 	elseif sync == "FlamegorStart" then
 		started = true
 		if self.db.profile.wingbuffet then
-			self:ScheduleEvent("BigWigs_Message", 16, L["wingbuffet_warning"], "Attention")
+			self:ScheduleEvent("BigWigs_Message", 13, L["wingbuffet_warning"], "Attention")
 			self:TriggerEvent("BigWigs_StartBar", self, L["wingbuffet1_bar"], 18, "Interface\\Icons\\INV_Misc_MonsterScales_14")
 		end
 	elseif sync == "FlamegorWingBuffetX" and self.db.profile.wingbuffet then
 		self:TriggerEvent("BigWigs_Message", L["wingbuffet_message"], "Important")
-		self:ScheduleEvent("BigWigs_Message", 28, L["wingbuffet_warning"], "Attention")
+		self:ScheduleEvent("BigWigs_Message", 25, L["wingbuffet_warning"], "Attention")
 		self:TriggerEvent("BigWigs_StartBar", self, L["wingbuffetcast_bar"], 1, "Interface\\Icons\\INV_Misc_MonsterScales_14", true, "black")
 		self:ScheduleEvent("BigWigs_StartBar", 1, self, L["wingbuffet_bar"], 29, "Interface\\Icons\\INV_Misc_MonsterScales_14")
 	elseif sync == "FlamegorShadowflameX" and self.db.profile.shadowflame then
