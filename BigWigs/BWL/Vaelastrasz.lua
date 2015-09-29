@@ -13,6 +13,7 @@ L:RegisterTranslations("enUS", function() return {
 	cmd = "Vaelastrasz",
 
 	adrenaline_trigger = "^(.+) (.+) afflicted by Burning Adrenaline\.",
+	start_trigger = "afflicted by Essence of the Red",
 	flamebreath_trigger = "Vaelastrasz the Corrupt begins to cast Flame Breath\.",
 	yell1 = "^Too late, friends",
 	yell2 = "^I beg you, mortals",
@@ -59,6 +60,7 @@ L:RegisterTranslations("deDE", function() return {
 	cmd = "Vaelastrasz",
 
 	adrenaline_trigger = "^(.+) (.+) von Brennendes Adrenalin betroffen\.",
+	start_trigger = "von Essenz der Roten betroffen",
 	flamebreath_trigger = "Vaelastrasz the Corrupt beginnt Flammenatem zu wirken\.",
 	yell1 = "^Too late, friends",
 	yell2 = "^I beg you, mortals",
@@ -109,7 +111,7 @@ BigWigsVaelastrasz = BigWigs:NewModule(boss)
 BigWigsVaelastrasz.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsVaelastrasz.enabletrigger = boss
 BigWigsVaelastrasz.toggleoptions = { "start", "flamebreath", "adrenaline", "whisper", "tankburn", "icon", "bosskill" }
-BigWigsVaelastrasz.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
+BigWigsVaelastrasz.revision = tonumber(string.sub("$Revision: 11206 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -117,6 +119,7 @@ BigWigsVaelastrasz.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
 
 function BigWigsVaelastrasz:OnEnable()
 	barstarted = false
+	started = false
 	announcedadrenaline = false
 	tankburnannounced = false
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
@@ -132,6 +135,7 @@ function BigWigsVaelastrasz:OnEnable()
 	self:TriggerEvent("BigWigs_ThrottleSync", "VaelAdrenaline", 2)
 	self:TriggerEvent("BigWigs_ThrottleSync", "VaelBreath", 3)
 	self:TriggerEvent("BigWigs_ThrottleSync", "VaelTankBurn", 5)
+	self:TriggerEvent("BigWigs_ThrottleSync", "VaelStart", 5)
 end
 
 ------------------------------
@@ -176,10 +180,7 @@ function BigWigsVaelastrasz:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function BigWigsVaelastrasz:BigWigs_RecvSync(sync, rest, nick)
-	if sync == "BossEngaged" and rest and rest == boss and self.db.profile.tankburn then
-		self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 45, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
-		self:ScheduleEvent("BigWigs_Message", 40, L["tankburnsoon"], "Urgent")
-	elseif sync == "VaelBreath" and self.db.profile.flamebreath then
+	if sync == "VaelBreath" and self.db.profile.flamebreath then
 		self:TriggerEvent("BigWigs_StartBar", self, L["breath_bar"], 2, "Interface\\Icons\\Spell_Fire_Fire", true, "Red")
 		self:TriggerEvent("BigWigs_Message", L["breath_message"], "Urgent")
 	elseif sync == "VaelDead" and rest and rest ~= "" and self.db.profile.adrenaline then
@@ -205,9 +206,21 @@ function BigWigsVaelastrasz:BigWigs_RecvSync(sync, rest, nick)
 			end
 		end
 		announcedadrenaline = false
-	elseif sync == "VaelTankBurn" and self.db.profile.tankburn then
-		self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 44.8, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
-		self:ScheduleEvent("BigWigs_Message", 39.8, L["tankburnsoon"], "Urgent")
+	elseif sync == "VaelStart" then
+		if not started then
+			if self.db.profile.tankburn
+				self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 44.9, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
+				self:ScheduleEvent("BigWigs_Message", 39.9, L["tankburnsoon"], "Urgent")
+			end
+		end
+		started = true
+	elseif sync == "VaelTankBurn" then
+		if not tankburnannounced then
+			if self.db.profile.tankburn then
+				self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 44.9, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
+				self:ScheduleEvent("BigWigs_Message", 39.9, L["tankburnsoon"], "Urgent")
+			end
+		end
 		tankburnannounced = false
 	end
 end
@@ -247,5 +260,13 @@ function BigWigsVaelastrasz:Event(msg)
 				break
 			end
 		end
+	end
+	if not started and string.find(msg, L["start_trigger"]) then
+		if self.db.profile.tankburn then
+			self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 45, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
+			self:ScheduleEvent("BigWigs_Message", 40, L["tankburnsoon"], "Urgent")
+		end
+		started = true
+		self:TriggerEvent("BigWigs_SendSync", "VaelStart")
 	end
 end
