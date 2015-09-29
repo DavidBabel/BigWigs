@@ -26,13 +26,13 @@ L:RegisterTranslations("enUS", function() return {
 	mindcontrol_bar = "MC: %s",
 	mindcontrolyouend_trigger = "Dominate Mind fades from you\.",
 	mindcontrolotherend_trigger = "Dominate Mind fades from (.+)\.",
-	polymorphother_trigger = "(.+) is afflicted by Greater Polymorph\.",
-	polymorphyou_trigger = "You are afflicted by Greater Polymorph\.",
+	polymorphother_trigger = "(.+) is afflicted by Weakened Soul\.",--Greater Polymorph\.",
+	polymorphyou_trigger = "You are afflicted by Weakened Soul\.",--Greater Polymorph\.",
 	polymorph_message = "%s is polymorphed! Dispel!",
 	polymorph_message_you = "You are polymorphed!",
 	polymorph_bar = "Polymorph: %s",
-	polymorphyouend_trigger = "Greater Polymorph fades from you\.",
-	polymorphotherend_trigger = "Greater Polymorph fades from (.+)\.",
+	polymorphyouend_trigger = "Weakened Soul fades from you\.", --"Greater Polymorph fades from you\.",
+	polymorphotherend_trigger = "Weakened Soul fades from (.+)\.",--"Greater Polymorph fades from (.+)\.",
 	deathyou_trigger = "You die\.",
 	deathother_trigger = "(.+) dies\.",
 	egg_trigger = "Razorgore the Untamed begins to cast Destroy Egg\.",
@@ -86,9 +86,9 @@ L:RegisterTranslations("enUS", function() return {
 	polymorph_name = "Greater Polymorph",
 	polymorph_desc = "Tells you who got polymorphed by Grethok the Controller and starts a clickable bar for easy selection.",
 	
-	puticon_cmd = "puticon",
-	puticon_name = "Raid icon on Mind Control",
-	puticon_desc = "Place a raid icon on the mind controlled player for the duration of the debuff.\n\n(Requires assistant or higher)",
+	icon_cmd = "icon",
+	icon_name = "Raid Icon on Mind Control",
+	icon_desc = "Place a raid icon on the mind controlled player for the duration of the debuff.\n\n(Requires assistant or higher)",
 } end)
 
 L:RegisterTranslations("deDE", function() return {
@@ -105,14 +105,14 @@ L:RegisterTranslations("deDE", function() return {
 	mindcontrol_message = "%s ist ferngesteuert!",
 	mindcontrol_message_you = "Du bist ferngesteuert!",
 	mindcontrol_bar = "Gedankenkontrolle: %s",
-	mindcontrolyouend_trigger = "\'Gedanken beherrschen\' schwindet von Euch.",
+	mindcontrolyouend_trigger = "'Gedanken beherrschen' schwindet von Euch\.",
 	mindcontrolotherend_trigger = "Gedanken beherrschen schwindet von (.+)\.",
 	polymorphother_trigger = "(.+) ist von Gro\195\159e Verwandlung betroffen\.",
 	polymorphyou_trigger = "Ihr seid von Gro\195\159e Verwandlung betroffen\.",
 	polymorph_message = "%s ist polymorphed! Entfernt es!",
 	polymorph_message_you = "Du bist polymorphed!",
 	polymorph_bar = "Polymorph: %s",
-	polymorphyouend_trigger = "\'Gro\195\159e Verwandlung\' schwindet von Euch\.",
+	polymorphyouend_trigger = "'Gro\195\159e Verwandlung' schwindet von Euch\.",
 	polymorphotherend_trigger = "Gro\195\159e Verwandlung schwindet von (.+)\.",
 	deathyou_trigger = "Du stirbst\.",
 	deathother_trigger = "(.+) stirbt\.",
@@ -167,9 +167,9 @@ L:RegisterTranslations("deDE", function() return {
 	polymorph_name = "Gro\195\159e Verwandlung",
 	polymorph_desc = "Sagt Ihnen, wer von Grethok den Controller polymorphed habe und startet einen anklickbaren Balken f\195\188r einfache Auswahl.",
 	
-	puticon_cmd = "puticon",
-	puticon_name = "Schlachtzugsymbol auf die Gedankenkontrolle Spieler",
-	puticon_desc = "Versetzt eine Schlachtzugsymbol auf der Gedankenkontrolle Spieler.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
+	icon_cmd = "icon",
+	icon_name = "Schlachtzugsymbol auf die Gedankenkontrolle Spieler",
+	icon_desc = "Versetzt eine Schlachtzugsymbol auf der Gedankenkontrolle Spieler.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
 } end)
 
 ----------------------------------
@@ -179,8 +179,8 @@ L:RegisterTranslations("deDE", function() return {
 BigWigsRazorgore = BigWigs:NewModule(boss)
 BigWigsRazorgore.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsRazorgore.enabletrigger = { boss, controller }
-BigWigsRazorgore.toggleoptions = { "phase", "mobs", "eggs", "polymorph", "mc", "puticon", "orb", "fireballvolley", "conflagration", "ktm", "bosskill" }
-BigWigsRazorgore.revision = tonumber(string.sub("$Revision: 11210 $", 12, -3))
+BigWigsRazorgore.toggleoptions = { "phase", "mobs", "eggs", "polymorph", "mc", "icon", "orb", "fireballvolley", "conflagration", "ktm", "bosskill" }
+BigWigsRazorgore.revision = tonumber(string.sub("$Revision: 11212 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -255,7 +255,7 @@ function BigWigsRazorgore:Events(msg)
 	local _, _, polyotherend = string.find(msg, L["polymorphotherend_trigger"])
 	local _, _, orbother = string.find(msg, L["orbcontrolother_trigger"])
 	local _, _, deathother = string.find(msg, L["deathother_trigger"])
-	if self.db.profile.puticon and (IsRaidLeader() or IsRaidOfficer()) then
+	if self.db.profile.icon and (IsRaidLeader() or IsRaidOfficer()) then
 		if mcother then
 			self:TriggerEvent("BigWigs_SetRaidIcon", mcother)
 		elseif msg == L["mindcontrolyou_trigger"] then
@@ -271,33 +271,33 @@ function BigWigsRazorgore:Events(msg)
 		end
 	end
 	if self.db.profile.mc then
-		if mcother then
-			self:TriggerEvent("BigWigs_Message", string.format(L["mindcontrol_message"], mcother), "Important")
-			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["mindcontrol_bar"], mcother), 15, "Interface\\Icons\\Spell_Shadow_ShadowWordDominate", true, "black")
-			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["mindcontrol_bar"], mcother), function(name, button, extra) TargetByName(extra, true) end, polyother)
-		elseif string.find(msg, L["mindcontrolyou_trigger"]) then
+		if msg == L["mindcontrolyou_trigger"] then
 			self:TriggerEvent("BigWigs_Message", L["mindcontrol_message_you"], "Important")
 			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["mindcontrol_bar"], UnitName("player")), 15, "Interface\\Icons\\Spell_Shadow_ShadowWordDominate", true, "black")
 			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["mindcontrol_bar"], UnitName("player")), function(name, button, extra) TargetByName(extra, true) end, UnitName("player"))
-		elseif mcotherend then
-			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["mindcontrol_bar"], mcotherend))
+		elseif mcother then
+			self:TriggerEvent("BigWigs_Message", string.format(L["mindcontrol_message"], mcother), "Important")
+			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["mindcontrol_bar"], mcother), 15, "Interface\\Icons\\Spell_Shadow_ShadowWordDominate", true, "black")
+			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["mindcontrol_bar"], mcother), function(name, button, extra) TargetByName(extra, true) end, mcother)
 		elseif string.find(msg, L["mindcontrolyouend_trigger"]) then
 			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["mindcontrol_bar"], UnitName("player")))
+		elseif mcotherend then
+			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["mindcontrol_bar"], mcotherend))
 		end
 	end
 	if self.db.profile.polymorph then
-		if polyother then
-			self:TriggerEvent("BigWigs_Message", string.format(L["polymorph_message"], polyother), "Important")
-			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["polymorph_bar"], polyother), 20, "Interface\\Icons\\Spell_Nature_Brilliance", true, "cyan")
-			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["polymorph_bar"], polyother), function(name, button, extra) TargetByName(extra, true) end, polyother)
-		elseif string.find(msg, L["polymorphyou_trigger"]) then
+		if msg == L["polymorphyou_trigger"] then
 			self:TriggerEvent("BigWigs_Message", L["polymorph_message_you"], "Important")
 			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["polymorph_bar"], UnitName("player")), 20, "Interface\\Icons\\Spell_Nature_Brilliance", true, "cyan")
 			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["polymorph_bar"], UnitName("player")), function(name, button, extra) TargetByName(extra, true) end, UnitName("player"))
+		elseif polyother then
+			self:TriggerEvent("BigWigs_Message", string.format(L["polymorph_message"], polyother), "Important")
+			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["polymorph_bar"], polyother), 20, "Interface\\Icons\\Spell_Nature_Brilliance", true, "cyan")
+			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["polymorph_bar"], polyother), function(name, button, extra) TargetByName(extra, true) end, polyother)
+		elseif msg == L["polymorphyouend_trigger"] then
+			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["polymorph_bar"], UnitName("player")))
 		elseif polyotherend then
 			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["polymorph_bar"], polyotherend))
-		elseif string.find(msg, L["polymorphyouend_trigger"]) then
-			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["polymorph_bar"], UnitName("player")))
 		end
 	end
 	if self.db.profile.orb then
