@@ -109,7 +109,7 @@ BigWigsVaelastrasz = BigWigs:NewModule(boss)
 BigWigsVaelastrasz.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsVaelastrasz.enabletrigger = boss
 BigWigsVaelastrasz.toggleoptions = { "start", "flamebreath", "adrenaline", "whisper", "tankburn", "icon", "bosskill" }
-BigWigsVaelastrasz.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
+BigWigsVaelastrasz.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -184,23 +184,25 @@ function BigWigsVaelastrasz:BigWigs_RecvSync(sync, rest, nick)
 		self:TriggerEvent("BigWigs_Message", L["breath_message"], "Urgent")
 	elseif sync == "VaelDead" and rest and rest ~= "" and self.db.profile.adrenaline then
 			self:TriggerEvent("BigWigs_StopBar", self, string.format(L["adrenaline_bar"], rest))
-	elseif sync == "VaelAdrenaline" and rest and rest ~= "" and not announcedadrenaline then
-		if self.db.profile.whisper then
-			if rest ~= UnitName("player") then
-				self:TriggerEvent("BigWigs_SendTell", rest, L["adrenaline_message_you"])
+	elseif sync == "VaelAdrenaline" and rest and rest ~= "" then
+		if not announcedadrenaline then
+			if self.db.profile.whisper then
+				if rest ~= UnitName("player") then
+					self:TriggerEvent("BigWigs_SendTell", rest, L["adrenaline_message_you"])
+				end
 			end
-		end
-		if self.db.profile.adrenaline then
-			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["adrenaline_bar"], rest), 20, "Interface\\Icons\\INV_Gauntlets_03", true, "White")
-			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["adrenaline_bar"], rest), function(name, button, extra) TargetByName(extra, true) end, rest)
-			if rest == UnitName("player") then
-				self:TriggerEvent("BigWigs_Message", L["adrenaline_message_you"], "Attention", true, "Alert")
-			else
-				self:TriggerEvent("BigWigs_Message", L["adrenaline_message"], "Urgent")
+			if self.db.profile.adrenaline then
+				self:TriggerEvent("BigWigs_StartBar", self, string.format(L["adrenaline_bar"], rest), 20, "Interface\\Icons\\INV_Gauntlets_03", true, "White")
+				self:SetCandyBarOnClick("BigWigsBar "..string.format(L["adrenaline_bar"], rest), function(name, button, extra) TargetByName(extra, true) end, rest)
+				if rest == UnitName("player") then
+					self:TriggerEvent("BigWigs_Message", L["adrenaline_message_you"], "Attention", true, "Alert")
+				else
+					self:TriggerEvent("BigWigs_Message", string.format(L["adrenaline_message"], rest), "Urgent")
+				end
 			end
-		end
-		if self.db.profile.icon then
-			self:TriggerEvent("BigWigs_SetRaidIcon", rest)
+			if self.db.profile.icon then
+				self:TriggerEvent("BigWigs_SetRaidIcon", rest)
+			end
 		end
 		announcedadrenaline = false
 	elseif sync == "VaelTankBurn" and self.db.profile.tankburn then
@@ -226,7 +228,7 @@ function BigWigsVaelastrasz:Event(msg)
 			if name == UnitName("player") then
 				self:TriggerEvent("BigWigs_Message", L["adrenaline_message_you"], "Attention", true, "Alert")
 			else
-				self:TriggerEvent("BigWigs_Message", L["adrenaline_message"], "Urgent")
+				self:TriggerEvent("BigWigs_Message", string.format(L["adrenaline_message"], name), "Urgent")
 			end
 		end
 		if self.db.profile.icon and not announcedadrenaline then
