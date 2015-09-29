@@ -208,7 +208,7 @@ function BigWigsVaelastrasz:BigWigs_RecvSync(sync, rest, nick)
 		announcedadrenaline = false
 	elseif sync == "VaelStart" then
 		if not started then
-			if self.db.profile.tankburn
+			if self.db.profile.tankburn then
 				self:TriggerEvent("BigWigs_StartBar", self, L["tankburn_bar"], 44.9, "Interface\\Icons\\INV_Gauntlets_03", true, "Black")
 				self:ScheduleEvent("BigWigs_Message", 39.9, L["tankburnsoon"], "Urgent")
 			end
