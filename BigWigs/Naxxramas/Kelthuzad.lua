@@ -82,6 +82,18 @@ L:RegisterTranslations("enUS", function() return {
 	attack_trigger2 = "Kel'Thuzad misses",
 	attack_trigger3 = "Kel'Thuzad hits",
 	attack_trigger4 = "Kel'Thuzad crits",
+	kick_trigger1 = "Kick hits Kel'Thuzad",
+	kick_trigger2 = "Kick crits Kel'Thuzad",
+	kick_trigger3 = "Kick was blocked by Kel'Thuzad",
+	pummel_trigger1 = "Pummel hits Kel'Thuzad",
+	pummel_trigger2 = "Pummel crits Kel'Thuzad",
+	pummel_trigger3 = "Pummel was blocked by Kel'Thuzad",
+	shieldbash_trigger1 = "Shield Bash hits Kel'Thuzad",
+	shieldbash_trigger2 = "Shield Bash crits Kel'Thuzad",
+	shieldbash_trigger3 = "Shield Bash was blocked by Kel'Thuzad",
+	earthshock_trigger1 = "Earth Shock hits Kel'Thuzad",
+	earthshock_trigger2 = "Earth Shock crits Kel'Thuzad",
+	earthshock_trigger3 = "Earth Shock was blocked by Kel'Thuzad",
 
 	phase1_warn = "Phase 1 ends in 20 seconds!",
 
@@ -139,7 +151,7 @@ BigWigsKelThuzad = BigWigs:NewModule(boss)
 BigWigsKelThuzad.zonename = AceLibrary("Babble-Zone-2.2")["Naxxramas"]
 BigWigsKelThuzad.enabletrigger = boss
 BigWigsKelThuzad.toggleoptions = { "frostbolt", "frostboltbar", -1, "frostblast", "fissure", "mc", "ktmreset", -1, "fbvolley", -1, "detonate", "detonateicon", -1 ,"guardians", -1, "addcount", "phase", "bosskill" }
-BigWigsKelThuzad.revision = tonumber(string.sub("$Revision: 17279 $", 12, -3)) 
+BigWigsKelThuzad.revision = tonumber(string.sub("$Revision: 11211 $", 12, -3)) 
 
 ------------------------------
 --      Initialization      --
@@ -152,14 +164,15 @@ end
 
 function BigWigsKelThuzad:OnEnable()
 	self.warnedAboutPhase3Soon = nil
-	castingfrostbolt = 0
 	frostbolttime = 0
 
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterEvent("CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE")
 	self:RegisterEvent("CHAT_MSG_COMBAT_HOSTILE_DEATH")
 	
---	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE")
+	self:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_SPELL_PARTY_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_SPELL_FRIENDLYPLAYER_DAMAGE", "Event")
 	self:RegisterEvent("UNIT_HEALTH")
 	self:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_HITS", "Event")
 	self:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES", "Event")
@@ -210,15 +223,15 @@ end
 function BigWigsKelThuzad:CHAT_MSG_MONSTER_YELL(msg)
 	if self.db.profile.phase and ( msg == L["start_trigger"] or msg == L["start_trigger1"] ) then 
 		self:TriggerEvent("BigWigs_Message", L["start_warning"], "Attention")
-		self:TriggerEvent("BigWigs_StartBar", self, L["start_bar"], 321 ) 					-- 
-		self:ScheduleEvent("phase1_warn", "BigWigs_Message", 301, L["phase1_warn"], "Important")
+		self:TriggerEvent("BigWigs_StartBar", self, L["start_bar"], 320 ) 					-- 
+		self:ScheduleEvent("phase1_warn", "BigWigs_Message", 300, L["phase1_warn"], "Important")
 		
 		if self.db.profile.addcount then
 		pstart=GetTime() 	-- start of p1, used for tracking add counts
 		ua=0
 		sw=0
-		self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], ua, "Unstoppable Abomination"),321)
-		self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], sw, "Soul Weaver"),321)
+		self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], ua, "Unstoppable Abomination"),320)
+		self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], sw, "Soul Weaver"),320)
 		end
 		
 	elseif ((msg == L["phase2_trigger1"]) or (msg == L["phase2_trigger2"]) or (msg == L["phase2_trigger3"])) then
@@ -314,9 +327,8 @@ function BigWigsKelThuzad:BigWigs_RecvSync(sync, rest, nick)
 		self:TriggerEvent("BigWigs_StartBar", self, L["detonate_possible_bar"], 20, "Interface\\Icons\\Spell_Nature_WispSplode")
 	elseif sync == "KelFrostboltStop" and self.db.profile.frostbolt then
 		self:TriggerEvent("BigWigs_StopBar", self, L["frostbolt_bar"])
-		castingfrostbolt = 0
+		frostbolttime = 0
 	elseif sync == "KelFrostbolt" and (self.db.profile.frostbolt or self.db.profile.frostboltbar) then       -- changed from only frostbolt (thats only alert, if someone still wants to see the bar, it wouldnt work then)
-		castingfrostbolt = 1
 		frostbolttime = GetTime()
 		if self.db.profile.frostbolt then
 			self:TriggerEvent("BigWigs_Message", L["frostbolt_warning"], "Personal")
@@ -327,18 +339,18 @@ function BigWigsKelThuzad:BigWigs_RecvSync(sync, rest, nick)
 	elseif sync == "KelAddDiesAbom" and self.db.profile.addcount then
 		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["add_bar"], ua, rest))
 		ua=ua+1
-		if (ua<14) then self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], ua, rest),(pstart+321-GetTime())) end
+		if (ua<14) then self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], ua, rest),(pstart+320-GetTime())) end
 	elseif sync == "KelAddDiesSoul" and self.db.profile.addcount then
 		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["add_bar"], sw, rest))
 		sw=sw+1
-		if (sw<14) then self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], sw, rest),(pstart+321-GetTime())) end
+		if (sw<14) then self:TriggerEvent("BigWigs_StartBar", self, string.format(L["add_bar"], sw, rest),(pstart+320-GetTime())) end
 	elseif sync == "KelDead" then
 		if self.db.profile.bosskill then self:TriggerEvent("BigWigs_Message", string.format(AceLibrary("AceLocale-2.2"):new("BigWigs")["%s has been defeated"], boss), "Bosskill", nil, "Victory") end
 		self:TriggerEvent("BigWigs_RemoveRaidIcon")
 		self.core:ToggleModuleActive(self, false)
 	end
 end
-function BigWigsKelThuzad:Affliction( msg )
+function BigWigsKelThuzad:Affliction(msg)
 	if string.find(msg, L["detonate_trigger"]) then
 		local _,_, dplayer, dtype = string.find( msg, L["detonate_trigger"])
 		if dplayer and dtype then
@@ -368,14 +380,18 @@ function BigWigsKelThuzad:Affliction( msg )
 	end
 end
 
-function BigWigsKelThuzad:Event( msg )
-	if string.find(msg, L["attack_trigger1"]) or string.find(msg, L["attack_trigger2"]) or string.find(msg, L["attack_trigger3"]) or string.find(msg, L["attack_trigger4"]) then
-		if castingfrostbolt == 1 then 
-			if (GetTime()-frostbolttime)<2 then
-				self:TriggerEvent("BigWigs_SendSync", "KelFrostboltStop")
-			elseif (GetTime()-frostbolttime)>=2 then
-				castingfrostbolt = 0
-			end
+function BigWigsKelThuzad:Event(msg)
+	if GetTime() < frostbolttime + 2 then
+		if string.find(msg, L["attack_trigger1"]) or string.find(msg, L["attack_trigger2"]) or string.find(msg, L["attack_trigger3"]) or string.find(msg, L["attack_trigger4"]) then
+			self:TriggerEvent("BigWigs_StopBar", self, L["frostbolt_bar"])
+			frostbolttime = 0
+			self:TriggerEvent("BigWigs_SendSync", "KelFrostboltStop")
+		elseif string.find(msg, L["kick_trigger1"]) or string.find(msg, L["kick_trigger2"]) or string.find(msg, L["kick_trigger3"]) or string.find(msg, L["pummel_trigger1"]) or string.find(msg, L["pummel_trigger2"]) or string.find(msg, L["pummel_trigger3"]) or string.find(msg, L["shieldbash_trigger1"]) or string.find(msg, L["shieldbash_trigger2"]) or string.find(msg, L["shieldbash_trigger3"]) or string.find(msg, L["earthshock_trigger1"]) or string.find(msg, L["earthshock_trigger2"]) or string.find(msg, L["earthshock_trigger3"]) then
+			self:TriggerEvent("BigWigs_StopBar", self, L["frostbolt_bar"])
+			frostbolttime = 0
+			self:TriggerEvent("BigWigs_SendSync", "KelFrostboltStop")
 		end
+	else
+		frostbolttime = 0
 	end
 end
