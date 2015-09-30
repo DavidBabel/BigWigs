@@ -93,7 +93,6 @@ L:RegisterTranslations("enUS", function() return {
 	shieldbash_trigger3 = "Shield Bash was blocked by Kel'Thuzad",
 	earthshock_trigger1 = "Earth Shock hits Kel'Thuzad",
 	earthshock_trigger2 = "Earth Shock crits Kel'Thuzad",
-	earthshock_trigger3 = "Earth Shock was blocked by Kel'Thuzad",
 
 	phase1_warn = "Phase 1 ends in 20 seconds!",
 
@@ -151,7 +150,7 @@ BigWigsKelThuzad = BigWigs:NewModule(boss)
 BigWigsKelThuzad.zonename = AceLibrary("Babble-Zone-2.2")["Naxxramas"]
 BigWigsKelThuzad.enabletrigger = boss
 BigWigsKelThuzad.toggleoptions = { "frostbolt", "frostboltbar", -1, "frostblast", "fissure", "mc", "ktmreset", -1, "fbvolley", -1, "detonate", "detonateicon", -1 ,"guardians", -1, "addcount", "phase", "bosskill" }
-BigWigsKelThuzad.revision = tonumber(string.sub("$Revision: 11211 $", 12, -3)) 
+BigWigsKelThuzad.revision = tonumber(string.sub("$Revision: 11212 $", 12, -3)) 
 
 ------------------------------
 --      Initialization      --
@@ -386,7 +385,7 @@ function BigWigsKelThuzad:Event(msg)
 			self:TriggerEvent("BigWigs_StopBar", self, L["frostbolt_bar"])
 			frostbolttime = 0
 			self:TriggerEvent("BigWigs_SendSync", "KelFrostboltStop")
-		elseif string.find(msg, L["kick_trigger1"]) or string.find(msg, L["kick_trigger2"]) or string.find(msg, L["kick_trigger3"]) or string.find(msg, L["pummel_trigger1"]) or string.find(msg, L["pummel_trigger2"]) or string.find(msg, L["pummel_trigger3"]) or string.find(msg, L["shieldbash_trigger1"]) or string.find(msg, L["shieldbash_trigger2"]) or string.find(msg, L["shieldbash_trigger3"]) or string.find(msg, L["earthshock_trigger1"]) or string.find(msg, L["earthshock_trigger2"]) or string.find(msg, L["earthshock_trigger3"]) then
+		elseif string.find(msg, L["kick_trigger1"]) or string.find(msg, L["kick_trigger2"]) or string.find(msg, L["kick_trigger3"]) or string.find(msg, L["pummel_trigger1"]) or string.find(msg, L["pummel_trigger2"]) or string.find(msg, L["pummel_trigger3"]) or string.find(msg, L["shieldbash_trigger1"]) or string.find(msg, L["shieldbash_trigger2"]) or string.find(msg, L["shieldbash_trigger3"]) or string.find(msg, L["earthshock_trigger1"]) or string.find(msg, L["earthshock_trigger2"]) then
 			self:TriggerEvent("BigWigs_StopBar", self, L["frostbolt_bar"])
 			frostbolttime = 0
 			self:TriggerEvent("BigWigs_SendSync", "KelFrostboltStop")
