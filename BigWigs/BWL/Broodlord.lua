@@ -16,16 +16,14 @@ L:RegisterTranslations("enUS", function() return {
 	bw_trigger = "^(.+) (.+) afflicted by Blast Wave",
 	deathyou_trigger = "You die\.",
 	deathother_trigger = "(.+) dies\.",
-
-	you = "You",
-	are = "are",
-
 	ms_warn_you = "Mortal Strike on you!",
 	ms_warn_other = "Mortal Strike on %s!",
 	bw_warn = "Blast Wave soon!",
-
 	ms_bar = "Mortal Strike: %s",
 	bw_bar = "Blast Wave",
+
+	you = "You",
+	are = "are",
 
 	ms_cmd = "ms",
 	ms_name = "Mortal Strike",
@@ -37,20 +35,20 @@ L:RegisterTranslations("enUS", function() return {
 } end )
 
 L:RegisterTranslations("deDE", function() return {
+	cmd = "Broodlord",
+	
 	ms_trigger = "^(.+) (.+) von T\195\182dlicher Sto\195\159 betroffen",
 	bw_trigger = "^(.+) (.+) von Druckwelle betroffen",
 	deathyou_trigger = "Du stirbst\.",
 	deathother_trigger = "(.+) stirbt\.",
-
-	you = "Ihr",
-	are = "seid",
-
 	ms_warn_you = "T\195\182dlicher Sto\195\159 auf Dir!",
 	ms_warn_other = "T\195\182dlicher Sto\195\159 auf %s!",
 	bw_warn = "Druckwelle bald!",
-	
 	ms_bar = "T\195\182dlicher Sto\195\159: %s",
 	bw_bar = "Druckwelle",
+
+	you = "Ihr",
+	are = "seid",
 
 	ms_cmd = "ms",
 	ms_name = "T\195\182dlicher Sto\195\159",
