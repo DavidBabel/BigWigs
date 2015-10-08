@@ -12,6 +12,7 @@ local L = AceLibrary("AceLocale-2.2"):new("BigWigs"..boss)
 L:RegisterTranslations("enUS", function() return {
 	cmd = "Broodlord",
 
+	engage_trigger = "None of your kind should be here",
 	ms_trigger = "^(.+) (.+) afflicted by Mortal Strike",
 	bw_trigger = "^(.+) (.+) afflicted by Blast Wave",
 	deathyou_trigger = "You die\.",
@@ -37,6 +38,7 @@ L:RegisterTranslations("enUS", function() return {
 L:RegisterTranslations("deDE", function() return {
 	cmd = "Broodlord",
 	
+	engage_trigger = "None of your kind should be here",
 	ms_trigger = "^(.+) (.+) von T\195\182dlicher Sto\195\159 betroffen",
 	bw_trigger = "^(.+) (.+) von Druckwelle betroffen",
 	deathyou_trigger = "Du stirbst\.",
@@ -67,7 +69,7 @@ BigWigsBroodlord = BigWigs:NewModule(boss)
 BigWigsBroodlord.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsBroodlord.enabletrigger = boss
 BigWigsBroodlord.toggleoptions = {"ms", "bw", "bosskill"}
-BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
+BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -77,6 +79,7 @@ function BigWigsBroodlord:OnEnable()
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE", "Event")
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE", "Event")
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterEvent("CHAT_MSG_COMBAT_FRIENDLY_DEATH")
 	self:RegisterEvent("CHAT_MSG_COMBAT_HOSTILE_DEATH", "GenericBossDeath")
 end
@@ -110,5 +113,13 @@ function BigWigsBroodlord:CHAT_MSG_COMBAT_FRIENDLY_DEATH(msg)
 		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["ms_bar"], UnitName("player")))
 	elseif deathother then
 		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["ms_bar"], deathother))
+	end
+end
+
+function BigWigsBroodlord:CHAT_MSG_MONSTER_YELL(msg)
+	if not self.db.profile.bw then return end
+	if string.find(msg, L["engage_trigger"]) then
+		self:TriggerEvent("BigWigs_StartBar", self, L["bw_bar"], 12, "Interface\\Icons\\Spell_Holy_Excorcism_02", true, "Red")
+		self:ScheduleEvent("BigWigs_Message", 9, L["bw_warn"], "Urgent", true, "Alert")
 	end
 end
