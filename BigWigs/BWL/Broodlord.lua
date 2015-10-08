@@ -69,13 +69,14 @@ BigWigsBroodlord = BigWigs:NewModule(boss)
 BigWigsBroodlord.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsBroodlord.enabletrigger = boss
 BigWigsBroodlord.toggleoptions = {"ms", "bw", "bosskill"}
-BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
+BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 11206 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
 ------------------------------
 
 function BigWigsBroodlord:OnEnable()
+	lastbw = 0
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE", "Event")
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE", "Event")
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE", "Event")
@@ -101,8 +102,11 @@ function BigWigsBroodlord:Event(msg)
 			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["ms_bar"], name), function(name, button, extra) TargetByName(extra, true) end, name)
 		end
 	elseif string.find(msg, L["bw_trigger"]) and self.db.profile.bw then
-		self:TriggerEvent("BigWigs_StartBar", self, L["bw_bar"], 8, "Interface\\Icons\\Spell_Holy_Excorcism_02", true, "Red")
-		self:ScheduleEvent("BigWigs_Message", 5, L["bw_warn"], "Urgent", true, "Alert")
+		if GetTime() - lastbw > 5 then
+			self:TriggerEvent("BigWigs_StartBar", self, L["bw_bar"], 8, "Interface\\Icons\\Spell_Holy_Excorcism_02", true, "Red")
+			self:ScheduleEvent("BigWigs_Message", 5, L["bw_warn"], "Urgent", true, "Alert")
+		end
+		lastbw = GetTime()
 	end
 end
 
