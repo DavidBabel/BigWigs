@@ -29,7 +29,7 @@ L:RegisterTranslations("enUS", function() return {
 
 	ms_cmd = "ms",
 	ms_name = "Mortal Strike",
-	ms_desc = "Warn when someone gets Mortal Strike.",
+	ms_desc = "Warn when someone gets Mortal Strike and starts a clickable bar for easy selection.",
 
 	bw_cmd = "bw",
 	bw_name = "Blast Wave",
@@ -54,7 +54,7 @@ L:RegisterTranslations("deDE", function() return {
 
 	ms_cmd = "ms",
 	ms_name = "T\195\182dlicher Sto\195\159",
-	ms_desc = "Warnung, wenn Spieler von T\195\182dlicher Sto\195\159 betroffen sind.",
+	ms_desc = "Warnung, wenn Spieler von T\195\182dlicher Sto\195\159 betroffen sind und beginnt einen anklickbaren Balken f\195\188r einfache Auswahl.",
 	
 	bw_cmd = "bw",
 	bw_name = "Druckwelle",
