@@ -1,4 +1,4 @@
-﻿------------------------------
+------------------------------
 --      Are you local?      --
 ------------------------------
 
@@ -12,120 +12,53 @@ local L = AceLibrary("AceLocale-2.2"):new("BigWigs"..boss)
 L:RegisterTranslations("enUS", function() return {
 	cmd = "Broodlord",
 
-	trigger1 = "^([^%s]+) ([^%s]+) afflicted by Mortal Strike",
+	ms_trigger = "^(.+) (.+) afflicted by Mortal Strike",
+	bw_trigger = "^(.+) (.+) afflicted by Blast Wave",
+	deathyou_trigger = "You die\.",
+	deathother_trigger = "(.+) dies\.",
 
 	you = "You",
 	are = "are",
 
-	warn1 = "Mortal Strike on you!",
-	warn2 = "Mortal Strike on %s!",
+	ms_warn_you = "Mortal Strike on you!",
+	ms_warn_other = "Mortal Strike on %s!",
+	bw_warn = "Blast Wave soon!",
 
-	youms_cmd = "youms",
-	youms_name = "Mortal strike on you alert",
-	youms_desc = "Warn when you get mortal strike",
+	ms_bar = "Mortal Strike: %s",
+	bw_bar = "Blast Wave",
 
-	elsems_cmd = "elsems",
-	elsems_name = "Mortal strike on others alert",
-	elsems_desc = "Warn when someone else gets mortal strike",
+	ms_cmd = "ms",
+	ms_name = "Mortal Strike",
+	ms_desc = "Warn when someone gets Mortal Strike.",
 
-	msbar_cmd = "msbar",
-	msbar_name = "Mortal Strike bar",
-	msbar_desc = "Shows a bar with the Mortal Strike duration",
-} end )
-
-L:RegisterTranslations("zhCN", function() return {
-	trigger1 = "^(.+)受(.+)了致死打击",
-
-	you = "你",
-	are = "到",
-
-	warn1 = "你中了致死打击！",
-	warn2 = "%s中了致死打击！",
-
-	youms_name = "玩家致死打击警报",
-	youms_desc = "你中了致死打击时发出警报",
-
-	elsems_name = "队友致死打击警报",
-	elsems_desc = "队友中了致死打击时发出警报",
-
-	msbar_name = "致死打击条",
-	msbar_desc = "显示一条致死打击的持续时间",
-} end )
-
-L:RegisterTranslations("zhTW", function() return {
-	trigger1 = "^(.+)受到(.*)致死打擊",
-
-	you = "你",
-	are = "了",
-
-	warn1 = "你中了致死打擊！",
-	warn2 = "%s 中了致死打擊！",
-
-	youms_name = "玩家致死打擊警報",
-	youms_desc = "你中了致死打擊時發出警報",
-
-	elsems_name = "隊友致死打擊警報",
-	elsems_desc = "隊友中了致死打擊時發出警報",
-
-	msbar_name = "致死打擊條",
-	msbar_desc = "顯示一條致死打擊的持續時間",
+	bw_cmd = "bw",
+	bw_name = "Blast Wave",
+	bw_desc = "Shows a bar with the possible Blast Wave cooldown.\n\n(Disclaimer: this varies anywhere from 8 to 15 seconds. Chosen shortest interval for safety.)",
 } end )
 
 L:RegisterTranslations("deDE", function() return {
-	trigger1 = "^([^%s]+) ([^%s]+) von T\195\182dlicher Sto\195\159 betroffen",
+	ms_trigger = "^(.+) (.+) von T\195\182dlicher Sto\195\159 betroffen",
+	bw_trigger = "^(.+) (.+) von Druckwelle betroffen",
+	deathyou_trigger = "Du stirbst\.",
+	deathother_trigger = "(.+) stirbt\.",
 
 	you = "Ihr",
 	are = "seid",
 
-	warn1 = "T\195\182dlicher Sto\195\159 auf Dir!",
-	warn2 = "T\195\182dlicher Sto\195\159 auf %s!",
+	ms_warn_you = "T\195\182dlicher Sto\195\159 auf Dir!",
+	ms_warn_other = "T\195\182dlicher Sto\195\159 auf %s!",
+	bw_warn = "Druckwelle bald!",
+	
+	ms_bar = "T\195\182dlicher Sto\195\159: %s",
+	bw_bar = "Druckwelle",
 
-	youms_name = "T\195\182dlicher Sto\195\159 auf Dir",
-	youms_desc = "Warnung, wenn Du von T\195\182dlicher Sto\195\159 betroffen bist.",
-
-	elsems_name = "T\195\182dlicher Sto\195\159 auf X",
-	elsems_desc = "Warnung, wenn andere Spieler von T\195\182dlicher Sto\195\159 betroffen sind.",
-
-	msbar_name = "T\195\182dlicher Sto\195\159",
-	msbar_desc = "Zeigt einen Anzeigebalken mit der Dauer des T\195\182dlichen Sto\195\159es.",
-} end )
-
-L:RegisterTranslations("koKR", function() return {
-	trigger1 = "^([^|;%s]*)(.*)죽음의 일격에 걸렸습니다%.$",
-
-	you = "",
-	are = "",
-
-	warn1 = "당신은 죽음의 일격!",
-	warn2 = "<<%s>> 죽음의 일격!",
-
-	youms_name = "자신의 죽음의 일격 경고",
-	youms_desc = "당신이 죽음의 일격에 걸렸을 때 경고",
-
-	elsems_name = "타인의 죽음의 일격 경고",
-	elsems_desc = "타인이 죽음의 일격에 걸렸을 때 경고",
-
-	msbar_name = "죽음의 일격 바",
-	msbar_desc = "죽음의 일격 주기 바 표시",
-} end )
-
-L:RegisterTranslations("frFR", function() return {
-	trigger1 = "^([^%s]+) ([^%s]+) les effets de Frappe mortelle.",
-
-	you = "Vous",
-	are = "subissez",
-
-	warn1 = "Frappe mortelle sur toi !",
-	warn2 = "Frappe mortelle sur %s !",
-
-	youms_name = "Alerte Frappe mortelle sur vous",
-	youms_desc = "Pr\195\169viens quand vous \195\170tes touch\195\169 par la Frappe mortelle.",
-
-	elsems_name = "Alerte Frappe mortelle sur les autres",
-	elsems_desc = "Pr\195\169viens quand quelqu'un d'autre est touch\195\169 par la Frappe mortelle.",
-
-	msbar_name = "Barre Frappe mortelle",
-	msbar_desc = "Affiche une barre indiquant la dur\195\169e de la Frappe mortelle.",
+	ms_cmd = "ms",
+	ms_name = "T\195\182dlicher Sto\195\159",
+	ms_desc = "Warnung, wenn Spieler von T\195\182dlicher Sto\195\159 betroffen sind.",
+	
+	bw_cmd = "bw",
+	bw_name = "Druckwelle",
+	bw_desc = "Zeigt eine Balken mit der m\195\182glichen Druckwelle Abklingzeit. (Dementi: Diese variiert \195\188berall von 8 bis 15 den Sekunden Sie wurde k\195\188rzeste Intervall für die Sicherheit entschieden.)",
 } end )
 
 ----------------------------------
@@ -135,17 +68,18 @@ L:RegisterTranslations("frFR", function() return {
 BigWigsBroodlord = BigWigs:NewModule(boss)
 BigWigsBroodlord.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsBroodlord.enabletrigger = boss
-BigWigsBroodlord.toggleoptions = {"youms", "elsems", "msbar", "bosskill"}
-BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 17909 $", 12, -3))
+BigWigsBroodlord.toggleoptions = {"ms", "bw", "bosskill"}
+BigWigsBroodlord.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
 ------------------------------
 
 function BigWigsBroodlord:OnEnable()
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE", "MSEvent")
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE", "MSEvent")
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE", "MSEvent")
+	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE", "Event")
+	self:RegisterEvent("CHAT_MSG_COMBAT_FRIENDLY_DEATH")
 	self:RegisterEvent("CHAT_MSG_COMBAT_HOSTILE_DEATH", "GenericBossDeath")
 end
 
@@ -153,15 +87,30 @@ end
 --      Event Handlers      --
 ------------------------------
 
-function BigWigsBroodlord:MSEvent(msg)
-	local _, _, EPlayer, EType = string.find(msg, L["trigger1"])
-	if (EPlayer and EType) then
-		if EPlayer == L["you"] and EType == L["are"] and self.db.profile.youms then
-			self:TriggerEvent("BigWigs_Message", L["warn1"], "Personal", true)
-			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["warn2"], UnitName("player")), 5, "Interface\\Icons\\Ability_Warrior_SavageBlow")
-		elseif self.db.profile.elsems then
-			self:TriggerEvent("BigWigs_Message", string.format(L["warn2"], EPlayer), "Attention")
-			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["warn2"], EPlayer), 5, "Interface\\Icons\\Ability_Warrior_SavageBlow")
+function BigWigsBroodlord:Event(msg)
+	local _, _, name, detect = string.find(msg, L["ms_trigger"])
+	if name and detect and self.db.profile.ms then
+		if detect == L["are"] then
+			self:TriggerEvent("BigWigs_Message", L["ms_warn_you"], "Urgent")
+			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["ms_bar"], UnitName("player")), 5, "Interface\\Icons\\Ability_Warrior_SavageBlow", true, "Black")
+			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["ms_bar"], UnitName("player")), function(name, button, extra) TargetByName(extra, true) end, UnitName("player"))
+		else
+			self:TriggerEvent("BigWigs_Message", string.format(L["ms_warn_other"], name), "Attention")
+			self:TriggerEvent("BigWigs_StartBar", self, string.format(L["ms_bar"], name), 5, "Interface\\Icons\\Ability_Warrior_SavageBlow", true, "Black")
+			self:SetCandyBarOnClick("BigWigsBar "..string.format(L["ms_bar"], name), function(name, button, extra) TargetByName(extra, true) end, name)
 		end
+	elseif string.find(msg, L["bw_trigger"]) and self.db.profile.bw then
+		self:TriggerEvent("BigWigs_StartBar", self, L["bw_bar"], 8, "Interface\\Icons\\Spell_Holy_Excorcism_02", true, "Red")
+		self:ScheduleEvent("BigWigs_Message", 5, L["bw_warn"], "Urgent", true, "Alert")
+	end
+end
+
+function BigWigsBroodlord:CHAT_MSG_COMBAT_FRIENDLY_DEATH(msg)
+	if not self.db.profile.bw then return end
+	local _, _, deathother = string.find(msg, L["deathother_trigger"])
+	if msg == L["deathyou_trigger"] then
+		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["ms_bar"], UnitName("player")))
+	elseif deathother then
+		self:TriggerEvent("BigWigs_StopBar", self, string.format(L["ms_bar"], deathother))
 	end
 end
