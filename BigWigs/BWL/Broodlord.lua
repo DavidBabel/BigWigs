@@ -58,7 +58,7 @@ L:RegisterTranslations("deDE", function() return {
 	
 	bw_cmd = "bw",
 	bw_name = "Druckwelle",
-	bw_desc = "Zeigt eine Balken mit der m\195\182glichen Druckwelle Abklingzeit. (Dementi: Diese variiert \195\188berall von 8 bis 15 den Sekunden Sie wurde k\195\188rzeste Intervall für die Sicherheit entschieden.)",
+	bw_desc = "Zeigt eine Balken mit der m\195\182glichen Druckwelle Abklingzeit.\n\n(Dementi: Diese variiert \195\188berall von 8 bis 15 den Sekunden Sie wurde k\195\188rzeste Intervall für die Sicherheit entschieden.)",
 } end )
 
 ----------------------------------
