@@ -85,7 +85,7 @@ BigWigsFiremaw = BigWigs:NewModule(boss)
 BigWigsFiremaw.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsFiremaw.enabletrigger = boss
 BigWigsFiremaw.toggleoptions = {"wingbuffet", "shadowflame", "flamebuffet", "bosskill"}
-BigWigsFiremaw.revision = tonumber(string.sub("$Revision: 11202 $", 12, -3))
+BigWigsFiremaw.revision = tonumber(string.sub("$Revision: 11203 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -118,7 +118,7 @@ function BigWigsFiremaw:Event(msg)
 		self:TriggerEvent("BigWigs_SendSync", "FiremawWingBuffetX")
 	elseif msg == L["shadowflame_trigger"] then 
 		self:TriggerEvent("BigWigs_SendSync", "FiremawShadowflameX")
-	elseif (string.find(msg, L["flamebuffetafflicted_trigger"]) or string.find(msg, L["flamebuffetresisted_trigger"]) or string.find(msg, L["flamebuffetimmune_trigger"]) or string.find(msg, L["flamebuffetabsorb1_trigger"]) or string.find(msg, L["flamebuffetabsorb2_trigger"])) and self.db.profile.flamebuffet and started then
+	elseif (string.find(msg, L["flamebuffetafflicted_trigger"]) or string.find(msg, L["flamebuffetresisted_trigger"]) or string.find(msg, L["flamebuffetimmune_trigger"]) or string.find(msg, L["flamebuffetabsorb1_trigger"]) or string.find(msg, L["flamebuffetabsorb2_trigger"])) and self.db.profile.flamebuffet then
 		self:TriggerEvent("BigWigs_StartBar", self, L["flamebuffet_bar"], 5, "Interface\\Icons\\Spell_Fire_Fireball", true, "White")
 	end
 end
