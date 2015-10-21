@@ -7,13 +7,20 @@ local L = AceLibrary("AceLocale-2.2"):new("BigWigs"..boss)
 
 local warnpairs = nil
 
+-- bow vars
+local BowBag = 0
+local BowSlot = 0
+local BowUnequipped = false
+
+
 ----------------------------
 --      Localization      --
 ----------------------------
 
 L:RegisterTranslations("enUS", function() return {
 	landing_soon_trigger = "Let the games begin!",
-	landing_trigger = "Enough! Now you",
+	landing_trigger = "Burn, you wretches",
+	-- landing_trigger = "Enough! Now you",
 	zerg_trigger = "Impossible! Rise my",
 	fear_trigger = "Nefarian begins to cast Bellowing Roar",
 	shadowflame_trigger = "Nefarian begins to cast Shadow Flame",
@@ -71,6 +78,10 @@ L:RegisterTranslations("enUS", function() return {
 	classcall_name = "Class Call alert",
 	classcall_desc = "Warn for Class Calls",
 
+	bowunequip_cmd = "bowunequip",
+	bowunequip_name = "Unequip bow / gun",
+	bowunequip_desc = "Auto Unequip Bow / Gun before classcall",
+
 	otherwarn_cmd = "otherwarn",
 	otherwarn_name = "Other alerts",
 	otherwarn_desc = "Landing and Zerg warnings",
@@ -83,8 +94,8 @@ L:RegisterTranslations("enUS", function() return {
 BigWigsNefarian = BigWigs:NewModule(boss)
 BigWigsNefarian.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsNefarian.enabletrigger = { boss, victor }
-BigWigsNefarian.toggleoptions = {"shadowflame", "fear", "classcall", "otherwarn", "bosskill"}
-BigWigsNefarian.revision = tonumber(string.sub("$Revision: 16639 $", 12, -3))
+BigWigsNefarian.toggleoptions = {"shadowflame", "fear", "classcall", "otherwarn", "bowunequip", "bosskill"}
+BigWigsNefarian.revision = tonumber(string.sub("$Revision: 16640 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -116,13 +127,70 @@ function BigWigsNefarian:OnEnable()
 end
 
 ------------------------------
+--   Hunter bow functions   --
+------------------------------
+
+function BigWigsNefarian:UnEquipBow( )
+	AttackTarget();
+	ClearTarget();
+	TargetLastTarget();
+	for i = 0, 4 do
+		if GetContainerNumSlots(i) then
+			for j = 1, GetContainerNumSlots(i) do
+				if GetContainerItemInfo(i, j) == nil then
+					ClearCursor();
+					PickupInventoryItem(18);
+					if CursorHasItem() then
+						PickupContainerItem(i, j)
+						BowBag = i;
+						BowSlot = j;
+						BowUnequipped = true;										
+					else
+						DEFAULT_CHAT_FRAME:AddMessage("Error unequip bow");
+					end
+					break;
+				end
+			end
+			if BowUnequipped then
+				break;
+			end
+		end
+	end
+end
+
+function BigWigsNefarian:EquipBow( )
+	if BowUnequipped then
+		if GetContainerItemInfo( BowBag, BowSlot ) then
+			ClearCursor();
+			PickupContainerItem( BowBag, BowSlot );
+			if CursorHasItem() then
+				PickupInventoryItem(18);	
+				BowBag = 0;
+				BowSlot = 0;
+				BowUnequipped = false;
+			else
+				DEFAULT_CHAT_FRAME:AddMessage("Error equip bow");
+			end
+		else
+			DEFAULT_CHAT_FRAME:AddMessage("Error equip bow");
+		end
+	end
+end
+
+------------------------------
 --      Event Handlers      --
 ------------------------------
 
 function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
+	local _, myclass = UnitClass("player")
 	for i,v in pairs(warnpairs) do
 		if string.find(msg, i) then
 			if v[2] then
+				if self.db.profile.bowunequip and myclass == "HUNTER" then
+				-- self:ScheduleEvent("equipbow", self.EquipBow, 5)
+					self:ScheduleEvent(self.EquipBow, 1)
+					self:ScheduleEvent(self.UnEquipBow, 26)
+				end
 				if self.db.profile.classcall then
 					self:TriggerEvent("BigWigs_Message", v[1], "Important")
 					self:ScheduleEvent("BigWigs_Message", 25, L["classcall_warning"], "Important", true, "Alarm")
@@ -137,6 +205,10 @@ function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
 					self:ScheduleEvent("BigWigs_Message", 125, L["landing_very_soon"], "Important", true, "Long")
 				elseif self.db.profile.otherwarn and string.find(msg, L["landing_trigger"]) then 
 					self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
+					-- first remove 10s after landing
+					if self.db.profile.bowunequip and myclass == "HUNTER" then
+						self:ScheduleEvent(self.UnEquipBow, 10)
+					end
 				elseif self.db.profile.otherwarn and string.find(msg, L["zerg_trigger"]) then 
 					self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
 				end
