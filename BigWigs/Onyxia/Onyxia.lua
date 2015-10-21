@@ -36,6 +36,10 @@ L:RegisterTranslations("enUS", function() return {
 	onyfear_name = "Fear",
 	onyfear_desc = "Warn for Bellowing Roar in phase 3.",
 
+	ktm_cmd = "ktm",
+	ktm_name = "Phase 3 KTM reset",
+	ktm_desc = "Default is to not reset KTM (to avoid spam from too many assistants). Uncheck to reset KTM.\n\n(Requires assistant or higher)",
+
 	deepbreath_trigger = "Onyxia takes in a deep breath",
 	flamebreath_trigger = "Onyxia begins to cast Flame Breath\.",
 	wingbuffet_trigger = "Onyxia begins to cast Wing Buffet\.",
@@ -83,6 +87,10 @@ L:RegisterTranslations("deDE", function() return {
 	onyfear_name = "Furcht",
 	onyfear_desc = "Warne vor Dr\195\182hnendes Gebr\195\188ll in Phase 3.",
 
+	ktm_cmd = "ktm",
+	ktm_name = "Phase 3 KTM zur\195\188ckgesetzt",
+	ktm_desc = "Standardm\195\164\195\159ig wird KTM nicht zur\195\188ckgesetzt (um Spam von zu vielen Helfer zu vermeiden). Deaktivieren Sie, um KTM zur\195\188ckzusetzen.\n\n(Ben\195\182tigt Schlachtzugleiter oder Assistent)",
+
 	deepbreath_trigger = "Onyxia takes in a deep breath",
 	flamebreath_trigger = "Onyxia beginnt Flammenatem zu wirken\.",
 	wingbuffet_trigger = "Onyxia beginnt Fl\195\188gelsto\195\159 zu wirken\.",
@@ -110,8 +118,8 @@ L:RegisterTranslations("deDE", function() return {
 BigWigsOnyxia = BigWigs:NewModule(boss)
 BigWigsOnyxia.zonename = AceLibrary("Babble-Zone-2.2")["Onyxia's Lair"]
 BigWigsOnyxia.enabletrigger = boss
-BigWigsOnyxia.toggleoptions = { "flamebreath", "deepbreath", "wingbuffet", "fireball", "phase", "onyfear", "bosskill"}
-BigWigsOnyxia.revision = tonumber(string.sub("$Revision: 11204 $", 12, -3))
+BigWigsOnyxia.toggleoptions = { "flamebreath", "deepbreath", "wingbuffet", "fireball", "phase", "onyfear", "ktm", "bosskill"}
+BigWigsOnyxia.revision = tonumber(string.sub("$Revision: 11205 $", 12, -3))
 
 ------------------------------
 --      Initialization      --
@@ -151,6 +159,9 @@ function BigWigsOnyxia:CHAT_MSG_MONSTER_YELL(msg)
 		self:TriggerEvent("BigWigs_SendSync", "OnyPhaseTwo")
 	elseif (string.find(msg, L["phase3_trigger"])) then
 		self:TriggerEvent("BigWigs_SendSync", "OnyPhaseThree")
+		if IsAddOnLoaded("KLHThreatMeter") and not self.db.profile.ktm and (IsRaidLeader() or IsRaidOfficer()) then
+			klhtm.net.clearraidthreat()
+		end
 	end
 end
 
