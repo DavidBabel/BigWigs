@@ -82,6 +82,10 @@ L:RegisterTranslations("enUS", function() return {
 	bowunequip_name = "Unequip bow / gun",
 	bowunequip_desc = "Auto Unequip Bow / Gun before classcall",
 
+	ktm_cmd = "ktm",
+	ktm_name = "Phase 2 KTM reset",
+	ktm_desc = "Default is to not reset KTM (to avoid spam from too many assistants). Uncheck to reset KTM.\n\n(Requires assistant or higher)",
+
 	otherwarn_cmd = "otherwarn",
 	otherwarn_name = "Other alerts",
 	otherwarn_desc = "Landing and Zerg warnings",
@@ -94,7 +98,7 @@ L:RegisterTranslations("enUS", function() return {
 BigWigsNefarian = BigWigs:NewModule(boss)
 BigWigsNefarian.zonename = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 BigWigsNefarian.enabletrigger = { boss, victor }
-BigWigsNefarian.toggleoptions = {"shadowflame", "fear", "classcall", "otherwarn", "bowunequip", "bosskill"}
+BigWigsNefarian.toggleoptions = {"shadowflame", "fear", "classcall", "otherwarn", "bowunequip", "ktm","bosskill"}
 BigWigsNefarian.revision = tonumber(string.sub("$Revision: 16640 $", 12, -3))
 
 ------------------------------
@@ -177,6 +181,12 @@ function BigWigsNefarian:EquipBow( )
 	end
 end
 
+function BigWigsNefarian:ResetKtm( )
+	if IsAddOnLoaded("KLHThreatMeter") and not self.db.profile.ktm and (IsRaidLeader() or IsRaidOfficer()) then
+		klhtm.net.clearraidthreat()
+	end
+end
+
 ------------------------------
 --      Event Handlers      --
 ------------------------------
@@ -205,6 +215,7 @@ function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
 					self:ScheduleEvent("BigWigs_Message", 125, L["landing_very_soon"], "Important", true, "Long")
 				elseif self.db.profile.otherwarn and string.find(msg, L["landing_trigger"]) then 
 					self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
+					self:ScheduleEvent(self.ResetKtm, 10)
 					-- first remove 10s after landing
 					if self.db.profile.bowunequip and myclass == "HUNTER" then
 						self:ScheduleEvent(self.UnEquipBow, 10)
