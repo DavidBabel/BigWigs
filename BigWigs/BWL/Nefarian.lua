@@ -10,8 +10,6 @@ local warnpairs = nil
 -- bow vars
 local BowBag = 0
 local BowSlot = 0
-local BowUnequipped = false
-
 
 ----------------------------
 --      Localization      --
@@ -148,22 +146,18 @@ function BigWigsNefarian:UnEquipBow( )
 						PickupContainerItem(i, j)
 						BowBag = i;
 						BowSlot = j;
-						BowUnequipped = true;										
 					else
-						DEFAULT_CHAT_FRAME:AddMessage("Error unequip bow");
+						DEFAULT_CHAT_FRAME:AddMessage("Error unequip bow : bow not found on char");
 					end
-					break;
+					return;	
 				end
-			end
-			if BowUnequipped then
-				break;
 			end
 		end
 	end
 end
 
 function BigWigsNefarian:EquipBow( )
-	if BowUnequipped then
+	if GetInventoryItemLink("player", 18) == nil then
 		if GetContainerItemInfo( BowBag, BowSlot ) then
 			ClearCursor();
 			PickupContainerItem( BowBag, BowSlot );
@@ -173,10 +167,10 @@ function BigWigsNefarian:EquipBow( )
 				BowSlot = 0;
 				BowUnequipped = false;
 			else
-				DEFAULT_CHAT_FRAME:AddMessage("Error equip bow");
+				DEFAULT_CHAT_FRAME:AddMessage("Error equip bow : bow not selected from bags");
 			end
 		else
-			DEFAULT_CHAT_FRAME:AddMessage("Error equip bow");
+			DEFAULT_CHAT_FRAME:AddMessage("Error equip bow : bow not found in bags");
 		end
 	end
 end
