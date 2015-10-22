@@ -148,6 +148,7 @@ function BigWigsNefarian:UnEquipBow( )
 						BowSlot = j;
 					else
 						DEFAULT_CHAT_FRAME:AddMessage("Error unequip bow : bow not found on char");
+						-- UIErrorsFrame:AddMessage("Coucou", 1.0, 0.5, 0.0, 3);
 					end
 					return;	
 				end
