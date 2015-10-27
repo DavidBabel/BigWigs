@@ -146,6 +146,7 @@ function BigWigsNefarian:UnEquipBow( )
 						PickupContainerItem(i, j)
 						BowBag = i;
 						BowSlot = j;
+						DEFAULT_CHAT_FRAME:AddMessage("OK ! bow unequiped");
 					else
 						DEFAULT_CHAT_FRAME:AddMessage("Error unequip bow : bow not found on char");
 						-- UIErrorsFrame:AddMessage("Coucou", 1.0, 0.5, 0.0, 3);
@@ -167,6 +168,7 @@ function BigWigsNefarian:EquipBow( )
 				BowBag = 0;
 				BowSlot = 0;
 				BowUnequipped = false;
+				DEFAULT_CHAT_FRAME:AddMessage("OK ! bow equiped");
 			else
 				DEFAULT_CHAT_FRAME:AddMessage("Error equip bow : bow not selected from bags");
 			end
@@ -194,7 +196,7 @@ function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
 				if self.db.profile.bowunequip and myclass == "HUNTER" then
 				-- self:ScheduleEvent("equipbow", self.EquipBow, 5)
 					self:ScheduleEvent(self.EquipBow, 1)
-					self:ScheduleEvent(self.UnEquipBow, 26)
+					self:ScheduleEvent(self.UnEquipBow, 25)
 				end
 				if self.db.profile.classcall then
 					self:TriggerEvent("BigWigs_Message", v[1], "Important")
@@ -213,7 +215,7 @@ function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
 					self:ScheduleEvent(self.ResetKtm, 10)
 					-- first remove 10s after landing
 					if self.db.profile.bowunequip and myclass == "HUNTER" then
-						self:ScheduleEvent(self.UnEquipBow, 10)
+						self:ScheduleEvent(self.UnEquipBow, 12)
 					end
 				elseif self.db.profile.otherwarn and string.find(msg, L["zerg_trigger"]) then 
 					self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
