@@ -226,11 +226,11 @@ function BigWigsNefarian:CHAT_MSG_MONSTER_YELL(msg)
 				self:ScheduleEvent("BigWigs_Message", 125, L["landing_very_soon"], "Important", true, "Long")
 			elseif self.db.profile.otherwarn and string.find(msg, L["landing_trigger"]) then 
 				self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
-				self:ScheduleEvent(self.ResetKtm, 10)
 				-- first remove 25s after landing 5s before class call
 				if self.db.profile.bowunequip and myclass == "HUNTER" then
-					self:ScheduleEvent(self.UnEquipBow, 24)
+					self:ScheduleEvent(self.UnEquipBow, 25)
 				end
+				self:ScheduleEvent(self.ResetKtm, 10)
 			elseif self.db.profile.otherwarn and string.find(msg, L["zerg_trigger"]) then 
 				self:TriggerEvent("BigWigs_Message", v[1], "Important", true, "Long")
 			end
